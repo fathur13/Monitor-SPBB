@@ -3,7 +3,7 @@
         ***********************************-->
 <div class="nav-header">
     <a href="index.html" class="brand-logo">
-        <img src="{{ url('public/assets') }}/images/avatar/logo-transparant.png" height="50px" alt="Logo perusahaan">
+        <img src="{{ url('public/assets') }}/images/logo/logo-transparant.png" height="50px" alt="Logo perusahaan">
         {{-- <svg class="brand-title" width="47" height="16" viewBox="0 0 47 16" fill="none"
             xmlns="http://www.w3.org/2000/svg">
             <path
@@ -903,7 +903,7 @@
 
                         </a>
                     </li>
-                    <li class="nav-item align-items-center header-border"><a href="page-login.html"
+                    <li class="nav-item align-items-center header-border"><a href="{{route('actionlogout')}}"
                             class="btn btn-primary btn-sm">Logout</a></li>
                     <li class="nav-item ps-3">
                         <div class="dropdown header-profile2">
@@ -914,8 +914,8 @@
                                         <img src="{{ url('public/assets') }}/images/tab/1.jpg" alt="">
                                     </div>
                                     <div class="header-info">
-                                        <h6>Fathur Rahman</h6>
-                                        <p>fathur@gmail.com</p>
+                                        <h6>{{ Auth::user()->name }}</h6>
+                                        <p>{{ Auth::user()->email }}</p>
                                     </div>
 
                                 </div>

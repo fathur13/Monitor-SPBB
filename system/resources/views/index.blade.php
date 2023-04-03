@@ -1,4 +1,5 @@
-@extends('template.base')
+@extends('layouts.app')
+@section('title', 'Login')
 @section('conten')
     {{-- panggil file jquery untuk proses realtime --}}
     <script type="text/javascript" src="{{ url('public/assets/jquery/jquery.min.js') }}"></script>
@@ -43,8 +44,8 @@
     </style>
 
     <!--**********************************
-             Content body start
-            ***********************************-->
+                         Content body start
+                        ***********************************-->
     <div class="content-body">
         <!-- row -->
         <div class="page-titles">
@@ -72,20 +73,6 @@
             <div class="row">
                 <div class="col-xl-6 wid-100">
                     <div class="row">
-                        {{-- <div class="col-md-12 card bg-danger">
-                            <div class="card-body">
-                                <div class="students d-flex align-items-center justify-content-between flex-wrap">
-                                    <div>
-                                        <h5>Status KID</h5>
-                                        <h1
-                                            style="font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif; color: #ffffff;
-                                            ">
-                                            Tenggelam</h1>
-                                        <span>Perkiraan air naik sampai ke level</span>
-                                    </div>
-                                </div>
-                            </div>
-                        </div> --}}
                         <div class="col-md-12 card" id="kid-status-card">
                             <div class="card-body">
                                 <div class="students d-flex align-items-center justify-content-between flex-wrap">
@@ -107,58 +94,11 @@
 
                         <div class="col-xl-12">
                             <div id="myChart" style="margin-bottom: 10px"></div>
-                            {{-- <div class="card overflow-hidden">
-                                    <div class="card-header border-0 pb-0 flex-wrap">
-                                        <h4 class="heading mb-0">Projects Overview</h4>
-                                        <ul class="nav nav-pills mix-chart-tab" id="pills-tab" role="tablist">
-                                            <li class="nav-item" role="presentation">
-                                                <button class="nav-link active" data-series="week" id="pills-week-tab"
-                                                    data-bs-toggle="pill" data-bs-target="#pills-week" type="button"
-                                                    role="tab" aria-selected="true">Week</button>
-                                            </li>
-                                            <li class="nav-item" role="presentation">
-                                                <button class="nav-link" data-series="month" id="pills-month-tab"
-                                                    data-bs-toggle="pill" data-bs-target="#pills-month"
-                                                    type="button" role="tab"
-                                                    aria-selected="false">Month</button>
-                                            </li>
-                                            <li class="nav-item" role="presentation">
-                                                <button class="nav-link" data-series="year" id="pills-year-tab"
-                                                    data-bs-toggle="pill" data-bs-target="#pills-year" type="button"
-                                                    role="tab" aria-selected="false">Year</button>
-                                            </li>
-                                            <li class="nav-item" role="presentation">
-                                                <button class="nav-link" data-series="all" id="pills-all-tab"
-                                                    data-bs-toggle="pill" data-bs-target="#pills-all" type="button"
-                                                    role="tab" aria-selected="false">All</button>
-                                            </li>
-                                        </ul>
-                                    </div>
-                                    <div class="card-body  p-0">
-                                        <div id="overiewChart"></div>
-                                        <div class="ttl-project">
-                                            <div class="pr-data">
-                                                <h5>12,721</h5>
-                                                <span>Number of Projects</span>
-                                            </div>
-                                            <div class="pr-data">
-                                                <h5 class="text-primary">721</h5>
-                                                <span>Active Projects</span>
-                                            </div>
-                                            <div class="pr-data">
-                                                <h5>$2,50,523</h5>
-                                                <span>Revenue</span>
-                                            </div>
-                                            <div class="pr-data">
-                                                <h5 class="text-success">12,275h</h5>
-                                                <span>Working Hours</span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div> --}}
                         </div>
                     </div>
                 </div>
+
+                {{-- SUHU LINGKAR --}}
                 <div class="col-xl-6 col-md-6 up-shd">
                     <div class="card">
                         <div class="card-header pb-0 border-0">
@@ -171,27 +111,32 @@
                         </div>
                         <div class="card-body">
                             <div class="row" style="max-width: 100%; margin: 0 auto; margin-top:80px">
-                                <div
-                                    style="border-radius: 50%; margin: 0 auto; width: 300px; height: 300px; border: 6px solid #ff0000; color: #000000; text-align: center; font: 32px Arial, sans-serif; display: flex; flex-direction: column; justify-content: center;">
-                                    <img src="{{ url('public/assets') }}/icons/termometer.png" alt="Thermometer Icon"
-                                        style="width: 80px; height: 80px; margin: 20px auto 0; display: block; width:30px;height:30px;">
-                                    <h4 style="margin: 0; font-size: 24px; font-weight: bold; color: #ff0000;">Suhu</h4>
+                                <div class="col-md-6">
                                     <div
-                                        style="display: flex; justify-content: center; align-items: center; flex-direction: column; height: 100%;">
-                                        <span id="suhu" style="font-size: 72px; font-weight: bold;"></span>
-                                        <span style="font-size: 24px; font-weight: bold;">℃</span>
+                                        style="border-radius: 50%; margin: 0 auto; width: 300px; height: 300px; border: 6px solid #ff0000; color: #000000; text-align: center; font: 32px Arial, sans-serif; display: flex; flex-direction: column; justify-content: center;">
+                                        <img src="{{ url('public/assets') }}/icons/termometer.png" alt="Thermometer Icon"
+                                            style="width: 80px; height: 80px; margin: 20px auto 0; display: block; width:30px;height:30px;">
+                                        <h4 style="margin: 0; font-size: 24px; font-weight: bold; color: #ff0000;">Suhu</h4>
+                                        <div
+                                            style="display: flex; justify-content: center; align-items: center; flex-direction: column; height: 100%;">
+                                            <span id="suhu" style="font-size: 72px; font-weight: bold;"></span>
+                                            <span style="font-size: 24px; font-weight: bold;">℃</span>
+                                        </div>
                                     </div>
                                 </div>
-                                <div
-                                    style="border-radius: 50%; margin: 0 auto; width: 300px; height: 300px; border: 6px solid #ff0000; color: #000000; text-align: center; font: 32px Arial, sans-serif; display: flex; flex-direction: column; justify-content: center;">
-                                    <img src="{{ url('public/assets') }}/icons/humidity.png" alt="Humidity Icon"
-                                        style="width: 80px; height: 80px; margin: 20px auto 0; display: block; width:30px;height:30px;">
-                                    <h4 style="margin: 0; font-size: 24px; font-weight: bold; color: #ff0000;">Kelembapan
-                                    </h4>
+                                <div class="col-md-6">
                                     <div
-                                        style="display: flex; justify-content: center; align-items: center; flex-direction: column; height: 100%;">
-                                        <span id="kelembapan" style="font-size: 72px; font-weight: bold;"></span>
-                                        <span style="font-size: 24px; font-weight: bold;">%</span>
+                                        style="border-radius: 50%; margin: 0 auto; width: 300px; height: 300px; border: 6px solid #ff0000; color: #000000; text-align: center; font: 32px Arial, sans-serif; display: flex; flex-direction: column; justify-content: center;">
+                                        <img src="{{ url('public/assets') }}/icons/humidity.png" alt="Humidity Icon"
+                                            style="width: 80px; height: 80px; margin: 20px auto 0; display: block; width:30px;height:30px;">
+                                        <h4 style="margin: 0; font-size: 24px; font-weight: bold; color: #ff0000;">
+                                            Kelembapan
+                                        </h4>
+                                        <div
+                                            style="display: flex; justify-content: center; align-items: center; flex-direction: column; height: 100%;">
+                                            <span id="kelembapan" style="font-size: 72px; font-weight: bold;"></span>
+                                            <span style="font-size: 24px; font-weight: bold;">%</span>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -810,8 +755,8 @@
     </div>
 
     <!--**********************************
-                                                                                     Content body end
-                                                                        ***********************************-->
+                                                                                                 Content body end
+                                                                                    ***********************************-->
     <div class="offcanvas offcanvas-end customeoff" tabindex="-1" id="offcanvasExample">
         <div class="offcanvas-header">
             <h5 class="modal-title" id="#gridSystemModal">Add Employee</h5>
@@ -1223,7 +1168,7 @@
                             'bg-danger bg-warning bg-info bg-success').addClass('bg-' + data
                             .color);
                         $('#ketinggian-air').html(Math.abs(data.ketinggian_air).toFixed(2));
-                        
+
                         // Menambahkan border warna merah pada kartu jika status KID adalah "Tenggelam"
                         if (data.status === "Tenggelam") {
                             $('#kid-status-card').addClass('border-danger');

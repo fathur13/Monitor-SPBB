@@ -1,94 +1,38 @@
 <!DOCTYPE html>
 <html lang="en" class="h-100">
-
-
 <!-- Mirrored from w3crm.dexignzone.com/xhtml/page-login.html by HTTrack Website Copier/3.x [XR&CO'2014], Thu, 02 Mar 2023 12:48:21 GMT -->
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login</title>
-    <!-- Bootstrap CSS -->
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
-        integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75jXO5mwgHz5+" crossorigin="anonymous">
-    <!-- Custom CSS -->
-    <style>
-        body {
-            background-color: #F7F7F7;
-            font-family: 'Open Sans', sans-serif;
-        }
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="keywords" content="">
+    <meta name="author" content="">
+    <meta name="robots" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="W3crm:Customer Relationship Management Admin Bootstrap 5 Template">
+    <meta property="og:title" content="W3crm:Customer Relationship Management Admin Bootstrap 5 Template">
+    <meta property="og:description" content="W3crm:Customer Relationship Management Admin Bootstrap 5 Template">
+    <meta property="og:image" content="social-image.png">
+    <meta name="format-detection" content="telephone=no">
 
-        .form-signin {
-            max-width: 400px;
-            margin: 0 auto;
-            padding: 20px;
-            background-color: #FFF;
-            border-radius: 5px;
-            box-shadow: 0px 0px 10px #999;
-        }
+    <!-- PAGE TITLE HERE -->
+    <title>Login - Monitor Sistem Pendeteksi Banjir </title>
 
-        .form-signin h1 {
-            text-align: center;
-            color: #333;
-            margin-bottom: 20px;
-        }
+    <!-- FAVICONS ICON -->
+    <link rel="shortcut icon" type="image/png" href="{{ url('public/assets') }}/images/logo/logo-transparant.png">
+    <link href="{{ url('public/assets') }}/vendor/bootstrap-select/dist/css/bootstrap-select.min.css" rel="stylesheet">
+    <link href="{{ url('public/assets') }}/css/style.css" rel="stylesheet">
 
-        .form-signin input[type="email"],
-        .form-signin input[type="password"] {
-            font-size: 16px;
-            height: auto;
-            margin-bottom: 10px;
-            padding: 7px;
-        }
-
-        .form-signin button[type="submit"] {
-            background-color: #3399FF;
-            color: #FFF;
-            border: none;
-            padding: 10px;
-            width: 100%;
-            font-size: 18px;
-            border-radius: 3px;
-            cursor: pointer;
-            transition: background-color 0.3s ease;
-        }
-
-        .form-signin button[type="submit"]:hover {
-            background-color: #1E7CEC;
-        }
-    </style>
 </head>
 
-<body>
-    <div class="container">
-        <div class="row">
-            <div class="col-md-12">
-                <form class="form-signin" method="POST" action="{{ route('login') }}">
-                    @csrf
-                    <h1 class="h3 mb-3 font-weight-normal">Please sign in</h1>
-                    <label for="email" class="sr-only">Email address</label>
-                    <input type="email" id="email" name="email" class="form-control" placeholder="Email address"
-                        required autofocus>
-                    <label for="password" class="sr-only">Password</label>
-                    <input type="password" id="password" name="password" class="form-control" placeholder="Password"
-                        required>
-                    <div class="checkbox mb-3">
-                        <label>
-                            <input type="checkbox" name="remember" value="1"> Remember me
-                        </label>
-                    </div>
-                    <button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
-                </form>
-            </div>
-        </div>
-    </div>
+<body class="vh-100">
     <div class="page-wraper">
 
         <!-- Content -->
         <div class="browse-job login-style3">
             <!-- Coming Soon -->
             <div class="bg-img-fix overflow-hidden"
-                style="background:#fff url(images/background/bg6.jpg); height: 100vh;">
+                style="background:#fff url({{ url('public/assets') }}/images/background/bg6.jpg); height: 100vh;">
                 <div class="row gx-0">
                     <div class="col-xl-4 col-lg-5 col-md-6 col-sm-12 vh-100 bg-white ">
                         <div id="mCSB_1" class="mCustomScrollBox mCS-light mCSB_vertical mCSB_inside"
@@ -96,15 +40,14 @@
                             <div id="mCSB_1_container" class="mCSB_container" style="position:relative; top:0; left:0;"
                                 dir="ltr">
                                 <div class="login-form style-2">
-
-
                                     <div class="card-body">
                                         <div class="logo-header">
-                                            <a href="index.html" class="logo"><img src="images/logo/logo-full.png"
-                                                    alt="" class="width-230 light-logo"></a>
                                             <a href="index.html" class="logo"><img
-                                                    src="images/logo/logofull-white.png" alt=""
-                                                    class="width-230 dark-logo"></a>
+                                                    src="{{ url('public/assets') }}/images/logo/logo.png"
+                                                    alt="" class="width-230 light-logo" height="50px"></a>
+                                            <a href="index.html" class="logo"><img
+                                                    src="{{ url('public/assets') }}/images/logo/logofull-white.png"
+                                                    alt="" class="width-230 dark-logo"></a>
                                         </div>
 
                                         <nav>
@@ -113,20 +56,18 @@
                                                 <div class="tab-content w-100" id="nav-tabContent">
                                                     <div class="tab-pane fade show active" id="nav-personal"
                                                         role="tabpanel" aria-labelledby="nav-personal-tab">
-                                                        <form action="https://w3crm.dexignzone.com/xhtml/index.html"
-                                                            class=" dz-form pb-3">
-                                                            <h3 class="form-title m-t0">Personal Information</h3>
+                                                        <form action="{{ route('actionlogin') }}" class=" dz-form pb-3" method="POST">
+                                                            @csrf
+                                                            <h3 class="form-title m-t0">Informasi Pribadi</h3>
                                                             <div class="dz-separator-outer m-b5">
                                                                 <div class="dz-separator bg-primary style-liner"></div>
                                                             </div>
                                                             <p>Enter your e-mail address and your password. </p>
                                                             <div class="form-group mb-3">
-                                                                <input type="email" class="form-control"
-                                                                    value="hello@example.com">
+                                                                <input type="email" name="email" class="form-control" placeholder="Email" required="">
                                                             </div>
                                                             <div class="form-group mb-3">
-                                                                <input type="password" class="form-control"
-                                                                    value="Password">
+                                                                <input type="password" name="password" class="form-control" placeholder="Password" required="">
                                                             </div>
                                                             <div class="form-group text-left mb-5 forget-main">
                                                                 <button type="submit" class="btn btn-primary">Sign Me
@@ -298,12 +239,12 @@
  Scripts
 ***********************************-->
     <!-- Required vendors -->
-    <script src="vendor/global/global.min.js"></script>
-    <script src="vendor/bootstrap-select/dist/js/bootstrap-select.min.js"></script>
-    <script src="js/deznav-init.js"></script>
-    <script src="js/custom.js"></script>
-    <script src="js/demo.js"></script>
-    <script src="js/styleSwitcher.js"></script>
+    <script src="{{ url('public/assets') }}/vendor/global/global.min.js"></script>
+    <script src="{{ url('public/assets') }}/vendor/bootstrap-select/dist/js/bootstrap-select.min.js"></script>
+    <script src="{{ url('public/assets') }}/js/deznav-init.js"></script>
+    <script src="{{ url('public/assets') }}/js/custom.js"></script>
+    <script src="{{ url('public/assets') }}/js/demo.js"></script>
+    <script src="{{ url('public/assets') }}/js/styleSwitcher.js"></script>
 </body>
 
 <!-- Mirrored from w3crm.dexignzone.com/xhtml/page-login.html by HTTrack Website Copier/3.x [XR&CO'2014], Thu, 02 Mar 2023 12:48:22 GMT -->
