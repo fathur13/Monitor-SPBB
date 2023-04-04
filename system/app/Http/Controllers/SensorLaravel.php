@@ -11,6 +11,14 @@ class SensorLaravel extends Controller
     {
         return view('sensor.index');
     }
+    function apiChart()
+    {
+        $dailyData = MSensor::getDailyData();
+
+        return response()->json([
+            'Suhu' => $dailyData
+        ]);
+    }
     public function index()
     {
         $dailyData = MSensor::getDailyData();

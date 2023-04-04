@@ -17,7 +17,7 @@
     <meta name="format-detection" content="telephone=no">
 
     <!-- PAGE TITLE HERE -->
-    <title>{{ config('app.name', 'Default Title') }} - @yield('title')</title>
+    <title>Monitoring Sitem Pendeteksi Banjir</title>
     <!-- FAVICONS ICON -->
     <link rel="shortcut icon" type="image/png" href="{{ url('public/assets') }}/images/logo/logo-transparant.png">
 

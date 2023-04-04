@@ -3,6 +3,7 @@
 use App\Http\Controllers\ApiController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\SensorLaravel;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -30,9 +31,17 @@ Route::get('/bacakelembapan', [SensorLaravel::class, 'bacakelembapan']);
 Route::get('/simpan/{nilaisuhu}/{nilaikelembapan}', [SensorLaravel::class, 'simpansensor']);
 Route::get('/get-kid-status', [SensorLaravel::class, 'getKIDStatus'])->name('get-kid-status');
 
+Route::get('apisuhu', [SensorLaravel::class, 'apiChart']);
+
 
 Route::get('/login', [LoginController::class, 'showLoginForm'])->name('login');
 Route::post('/login', [LoginController::class, 'login'])->name('actionlogin');
 Route::get('logout', [LoginController::class, 'logout'])->name('actionlogout')->middleware('auth');
 
-
+Route::get('/api/hujan', function () {
+    $data = DB::table('hujan')->latest()->first();
+    return response()->json([
+        'created_at' => $data->created_at,
+        'value' => $data->data
+    ]);
+});

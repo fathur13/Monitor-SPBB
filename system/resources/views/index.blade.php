@@ -1,6 +1,14 @@
 @extends('layouts.app')
 @section('title', 'Login')
 @section('conten')
+    <script></script>
+    <style type="text/css">
+        #myChart {
+            height: 400px;
+            width: 100%;
+            margin: 0 auto;
+        }
+    </style>
     {{-- panggil file jquery untuk proses realtime --}}
     <script type="text/javascript" src="{{ url('public/assets/jquery/jquery.min.js') }}"></script>
 
@@ -12,23 +20,6 @@
                 $("#kelembapan").load("{{ url('bacakelembapan') }}");
             }, 1000); //1000ms = 1s
         })
-        // $(document).ready(function() {
-        //     setInterval(function() {
-        //         // Check if data has been loaded in the past 10 seconds
-        //         var lastLoadTime = new Date(localStorage.getItem('lastLoadTime') || null);
-        //         var currentTime = new Date();
-        //         if (!lastLoadTime || (currentTime - lastLoadTime > 10000)) {
-        //             // Display offline message
-        //             $("#suhu").text("Offline");
-        //             $("#kelembapan").text("Offline");
-        //         } else {
-        //             // Load data from server and update last load time
-        //             $("#suhu").load("{{ url('bacasuhu') }}");
-        //             $("#kelembapan").load("{{ url('bacakelembapan') }}");
-        //             localStorage.setItem('lastLoadTime', currentTime);
-        //         }
-        //     }, 1000); //1000ms = 1s
-        // });
     </script>
 
     {{-- chart  --}}
@@ -36,16 +27,11 @@
     <script src="https://code.highcharts.com/modules/series-label.js"></script>
     <script src="https://code.highcharts.com/modules/exporting.js"></script>
     <script src="https://code.highcharts.com/modules/export-data.js"></script>
-    <style type="text/css">
-        #myChart {
-            height: 400px;
-            margin: 0 auto;
-        }
-    </style>
+
 
     <!--**********************************
-                         Content body start
-                        ***********************************-->
+                                                                                                                                 Content body start
+                                                                                                                                ***********************************-->
     <div class="content-body">
         <!-- row -->
         <div class="page-titles">
@@ -92,8 +78,11 @@
                             </div>
                         </div>
 
-                        <div class="col-xl-12">
-                            <div id="myChart" style="margin-bottom: 10px"></div>
+                        <div class="col-xl-12" style="margin-bottom: 10px">
+                            <canvas id="realtime-chart"></canvas>
+
+                            <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+                            <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
                         </div>
                     </div>
                 </div>
@@ -141,57 +130,6 @@
                                 </div>
                             </div>
                         </div>
-
-
-                        {{-- <div id="projectChart" class="project-chart"></div> --}}
-                        {{-- <div class="project-date">
-                                <div class="project-media">
-                                        <p class="mb-0">
-                                            <svg class="me-2" width="12" height="13" viewBox="0 0 12 13"
-                                                fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                <rect y="0.5" width="12" height="12" rx="3"
-                                                    fill="var(--primary)" />
-                                            </svg>
-                                            Completed Projects
-                                        </p>
-                                        <span>125 Projects</span>
-                                    </div>
-                                    <div class="project-media">
-                                        <p class="mb-0">
-                                            <svg class="me-2" width="12" height="13" viewBox="0 0 12 13"
-                                                fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                <rect y="0.5" width="12" height="12" rx="3"
-                                                    fill="#3AC977" />
-                                            </svg>
-                                            Progress Projects
-                                        </p>
-                                        <span>125 Projects</span>
-                                    </div>
-                                    <div class="project-media">
-                                        <p class="mb-0">
-                                            <svg class="me-2" width="12" height="13" viewBox="0 0 12 13"
-                                                fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                <rect y="0.5" width="12" height="12" rx="3"
-                                                    fill="#FF5E5E" />
-                                            </svg>
-                                            Cancelled
-                                        </p>
-                                        <span>125 Projects</span>
-                                    </div>
-                                    <div class="project-media">
-                                        <p class="mb-0">
-                                            <svg class="me-2" width="12" height="13"
-                                                viewBox="0 0 12 13" fill="none"
-                                                xmlns="http://www.w3.org/2000/svg">
-                                                <rect y="0.5" width="12" height="12"
-                                                    rx="3" fill="#FF9F00" />
-                                            </svg>
-                                            Yet to Start
-                                        </p>
-                                        <span>125 Projects</span>
-                                    </div>
-                            </div> --}}
-                        {{-- </div> --}}
                     </div>
                 </div>
                 <div class="col-xl-6 active-p">
@@ -755,8 +693,8 @@
     </div>
 
     <!--**********************************
-                                                                                                 Content body end
-                                                                                    ***********************************-->
+                                                                                                                                                                                                         Content body end
+                                                                                                                                                                                            ***********************************-->
     <div class="offcanvas offcanvas-end customeoff" tabindex="-1" id="offcanvasExample">
         <div class="offcanvas-header">
             <h5 class="modal-title" id="#gridSystemModal">Add Employee</h5>
@@ -1068,83 +1006,48 @@
     </div>
     {{-- secript chart --}}
     <script>
-        var dailyData = <?php echo json_encode($dailyData); ?>;
-        var categories = dailyData.map(function(d) {
-            return d.date;
-        });
-        Highcharts.chart('myChart', {
-            chart: {
-                type: 'line'
+        const ctx = document.getElementById('realtime-chart').getContext('2d');
+    
+        const chart = new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: [],
+                datasets: [{
+                    label: 'Realtime Data',
+                    data: [],
+                    borderWidth: 1
+                }]
             },
-            title: {
-                text: 'Grafik Sensor Per Hari'
-            },
-            xAxis: {
-                categories: categories,
-                tickmarkPlacement: 'on',
-                title: {
-                    enabled: false
-                }
-            },
-            yAxis: {
-                title: {
-                    text: 'Value'
-                }
-            },
-            tooltip: {
-                split: true,
-                valueSuffix: ''
-            },
-            plotOptions: {
-                line: {
-                    marker: {
-                        enabled: true,
-                        symbol: 'circle',
-                        radius: 4,
-                        states: {
-                            hover: {
-                                enabled: true
-                            }
-                        }
+            options: {
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        max: 1100
                     }
                 }
-            },
-            series: [{
-                name: 'Suhu',
-                data: dailyData.map(function(d) {
-                    return parseFloat(d.suhu_avg.toFixed(2))
-                }),
-                color: '#FFC300',
-                fillColor: {
-                    linearGradient: [0, 0, 0, 300],
-                    stops: [
-                        [0, 'rgba(255, 195, 0, 0.2)'],
-                        [1, 'rgba(255, 195, 0, 0)']
-                    ]
-                }
-            }, {
-                name: 'Kelembapan',
-                data: dailyData.map(function(d) {
-                    return parseFloat(d.kelembapan_avg.toFixed(2))
-                }),
-                color: '#3498DB',
-                fillColor: {
-                    linearGradient: [0, 0, 0, 300],
-                    stops: [
-                        [0, 'rgba(52, 152, 219, 0.2)'],
-                        [1, 'rgba(52, 152, 219, 0)']
-                    ]
-                }
-            }],
-            legend: {
-                align: 'right',
-                verticalAlign: 'middle',
-                layout: 'vertical'
             }
         });
+    
+        setInterval(function() {
+            $.ajax({
+                url: 'api/hujan',
+                type: 'GET',
+                success: function(data) {
+                    chart.data.labels.push(data.created_at);
+                    chart.data.datasets[0].data.push(data.value);
+                    // Batasi data pada chart hanya 5 data terbaru
+                    if (chart.data.labels.length > 5) {
+                        chart.data.labels = chart.data.labels.slice(-5);
+                        chart.data.datasets[0].data = chart.data.datasets[0].data.slice(-5);
+                    }
+                    chart.update();
+                }
+            });
+        }, 5000);
     </script>
+    
 
-    // scrip warning
+    {{--  scrip warning --}}
     <script>
         $(document).ready(function() {
             // Membuat permintaan setiap 1 detik untuk mendapatkan status KID terbaru dari server
@@ -1180,4 +1083,11 @@
             }, 1000);
         });
     </script>
+
+    {{-- css --}}
+    <style>
+        #realtime-chart {
+        background-color: #fff;
+    }
+    </style>
 @endsection
