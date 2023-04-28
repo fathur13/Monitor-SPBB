@@ -27,7 +27,6 @@
 
 <body class="vh-100">
     <div class="page-wraper">
-
         <!-- Content -->
         <div class="browse-job login-style3">
             <!-- Coming Soon -->
@@ -43,20 +42,19 @@
                                     <div class="card-body">
                                         <div class="logo-header">
                                             <a href="index.html" class="logo"><img
-                                                    src="{{ url('public/assets') }}/images/logo/logo.png"
-                                                    alt="" class="width-230 light-logo" height="50px"></a>
+                                                    src="{{ url('public/assets') }}/images/logo/logo.png" alt=""
+                                                    class="width-230 light-logo" height="50px"></a>
                                             <a href="index.html" class="logo"><img
                                                     src="{{ url('public/assets') }}/images/logo/logofull-white.png"
                                                     alt="" class="width-230 dark-logo"></a>
                                         </div>
-
                                         <nav>
                                             <div class="nav nav-tabs border-bottom-0" id="nav-tab" role="tablist">
-
                                                 <div class="tab-content w-100" id="nav-tabContent">
                                                     <div class="tab-pane fade show active" id="nav-personal"
                                                         role="tabpanel" aria-labelledby="nav-personal-tab">
-                                                        <form action="{{ route('actionlogin') }}" class=" dz-form pb-3" method="POST">
+                                                        <form action="{{ route('actionlogin') }}" class=" dz-form pb-3"
+                                                            method="POST">
                                                             @csrf
                                                             <h3 class="form-title m-t0">Informasi Pribadi</h3>
                                                             <div class="dz-separator-outer m-b5">
@@ -64,10 +62,14 @@
                                                             </div>
                                                             <p>Enter your e-mail address and your password. </p>
                                                             <div class="form-group mb-3">
-                                                                <input type="email" name="email" class="form-control" placeholder="Email" required="">
+                                                                <input type="email" name="email"
+                                                                    class="form-control" placeholder="Email"
+                                                                    required="">
                                                             </div>
                                                             <div class="form-group mb-3">
-                                                                <input type="password" name="password" class="form-control" placeholder="Password" required="">
+                                                                <input type="password" name="password"
+                                                                    class="form-control" placeholder="Password"
+                                                                    required="">
                                                             </div>
                                                             <div class="form-group text-left mb-5 forget-main">
                                                                 <button type="submit" class="btn btn-primary">Sign Me

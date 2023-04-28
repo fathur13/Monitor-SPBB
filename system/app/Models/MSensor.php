@@ -11,7 +11,7 @@ class MSensor extends Model
 
     protected $table = 'sensor';
     protected $primarykey = 'id';
-    protected $filelable = ['suhu', 'kelembapan', 'ketinggian_air', 'created_at'];
+    protected $filelable = ['suhu', 'kelembapan', 'ketinggian_air','status_air', 'created_at'];
 
     public static function getDailyData()
     {

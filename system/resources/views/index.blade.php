@@ -1,7 +1,7 @@
 @extends('layouts.app')
 @section('title', 'Login')
+@section('header', 'Dashboard')
 @section('conten')
-    <script></script>
     <style type="text/css">
         #myChart {
             height: 400px;
@@ -18,7 +18,25 @@
             setInterval(function() {
                 $("#suhu").load("{{ url('bacasuhu') }}");
                 $("#kelembapan").load("{{ url('bacakelembapan') }}");
-            }, 1000); //1000ms = 1s
+                // $("#cuaca").load("{{ url('bacacuaca') }}");
+                $.get("{{ url('bacacuaca') }}", function(data) {
+                    // memeriksa apakah sedang hujan atau tidak
+                    if (data == "is raining!") {
+                        // mengubah gambar menjadi gambar hujan
+                        $("#cuaca-img").attr("src",
+                            "{{ url('public/assets') }}/images/card/hujan.png");
+                        // mengubah teks menjadi "Hujan"
+                        $("#cuaca-text").text("is raining!");
+                    } else {
+                        // mengubah gambar menjadi gambar tidak hujan
+                        $("#cuaca-img").attr("src",
+                            "{{ url('public/assets') }}/images/card/cerah.png");
+                        // mengubah teks menjadi "Tidak hujan"
+                        $("#cuaca-text").text("is not raining!");
+                    }
+                });
+            }, 1000);
+
         })
     </script>
 
@@ -28,659 +46,72 @@
     <script src="https://code.highcharts.com/modules/exporting.js"></script>
     <script src="https://code.highcharts.com/modules/export-data.js"></script>
 
-
-    <!--**********************************
-                                                                                                                                 Content body start
-                                                                                                                                ***********************************-->
-    <div class="content-body">
-        <!-- row -->
-        <div class="page-titles">
-            <ol class="breadcrumb">
-                <li>
-                    <h5 class="bc-title">Dashboard</h5>
-                </li>
-                <li class="breadcrumb-item"><a href="javascript:void(0)">
-                        <svg width="17" height="17" viewBox="0 0 17 17" fill="none"
-                            xmlns="http://www.w3.org/2000/svg">
-                            <path
-                                d="M2.125 6.375L8.5 1.41667L14.875 6.375V14.1667C14.875 14.5424 14.7257 14.9027 14.4601 15.1684C14.1944 15.4341 13.8341 15.5833 13.4583 15.5833H3.54167C3.16594 15.5833 2.80561 15.4341 2.53993 15.1684C2.27426 14.9027 2.125 14.5424 2.125 14.1667V6.375Z"
-                                stroke="#2C2C2C" stroke-linecap="round" stroke-linejoin="round" />
-                            <path d="M6.375 15.5833V8.5H10.625V15.5833" stroke="#2C2C2C" stroke-linecap="round"
-                                stroke-linejoin="round" />
-                        </svg>
-                        Home </a>
-                </li>
-                <li class="breadcrumb-item active"><a href="javascript:void(0)">Dashboard</a></li>
-            </ol>
-            <a class="text-primary fs-13" data-bs-toggle="offcanvas" href="#offcanvasExample1" role="button"
-                aria-controls="offcanvasExample1">+ Add Task</a>
-        </div>
-        <div class="container-fluid">
-            <div class="row">
-                <div class="col-xl-6 wid-100">
-                    <div class="row">
-                        <div class="col-md-12 card" id="kid-status-card">
-                            <div class="card-body">
-                                <div class="students d-flex align-items-center justify-content-between flex-wrap">
-                                    <div>
-                                        <h5>Status KID</h5>
-                                        <h1
-                                            style="font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;">
-                                            <span id="kid-status">-</span>
-                                        </h1>
-                                    </div>
-                                    <div class="text-right">
-                                        <h6 style="font-weight:bold;color:#fff">Ketinggian Air</h6>
-                                        <h2 style="font-weight:bold; font-size:3em; color:#fff"><span
-                                                id="ketinggian-air"></span>cm</h2>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="col-xl-12" style="margin-bottom: 10px">
-                            <canvas id="realtime-chart"></canvas>
-
-                            <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-                            <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-                        </div>
-                    </div>
-                </div>
-
-                {{-- SUHU LINGKAR --}}
-                <div class="col-xl-6 col-md-6 up-shd">
-                    <div class="card">
-                        <div class="card-header pb-0 border-0">
-                            <h4 class="heading mb-0">Monitoring Suhu dan Ketinggian Air</h4>
-                            <select class="default-select status-select normal-select">
-                                <option value="Today">Today</option>
-                                <option value="Week">Week</option>
-                                <option value="Month">Month</option>
-                            </select>
-                        </div>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-xl-6 wid-100">
+                <div class="row">
+                    <div class="col-md-12 card" id="kid-status-card">
                         <div class="card-body">
-                            <div class="row" style="max-width: 100%; margin: 0 auto; margin-top:80px">
-                                <div class="col-md-6">
-                                    <div
-                                        style="border-radius: 50%; margin: 0 auto; width: 300px; height: 300px; border: 6px solid #ff0000; color: #000000; text-align: center; font: 32px Arial, sans-serif; display: flex; flex-direction: column; justify-content: center;">
-                                        <img src="{{ url('public/assets') }}/icons/termometer.png" alt="Thermometer Icon"
-                                            style="width: 80px; height: 80px; margin: 20px auto 0; display: block; width:30px;height:30px;">
-                                        <h4 style="margin: 0; font-size: 24px; font-weight: bold; color: #ff0000;">Suhu</h4>
-                                        <div
-                                            style="display: flex; justify-content: center; align-items: center; flex-direction: column; height: 100%;">
-                                            <span id="suhu" style="font-size: 72px; font-weight: bold;"></span>
-                                            <span style="font-size: 24px; font-weight: bold;">℃</span>
-                                        </div>
-                                    </div>
+                            <div class="students d-flex align-items-center justify-content-between flex-wrap">
+                                <div>
+                                    <h5>Status KID</h5>
+                                    <h1 style="font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;">
+                                        <span id="kid-status">-</span>
+                                    </h1>
                                 </div>
-                                <div class="col-md-6">
-                                    <div
-                                        style="border-radius: 50%; margin: 0 auto; width: 300px; height: 300px; border: 6px solid #ff0000; color: #000000; text-align: center; font: 32px Arial, sans-serif; display: flex; flex-direction: column; justify-content: center;">
-                                        <img src="{{ url('public/assets') }}/icons/humidity.png" alt="Humidity Icon"
-                                            style="width: 80px; height: 80px; margin: 20px auto 0; display: block; width:30px;height:30px;">
-                                        <h4 style="margin: 0; font-size: 24px; font-weight: bold; color: #ff0000;">
-                                            Kelembapan
-                                        </h4>
-                                        <div
-                                            style="display: flex; justify-content: center; align-items: center; flex-direction: column; height: 100%;">
-                                            <span id="kelembapan" style="font-size: 72px; font-weight: bold;"></span>
-                                            <span style="font-size: 24px; font-weight: bold;">%</span>
-                                        </div>
-                                    </div>
+                                <div class="text-right">
+                                    <h6 style="font-weight:bold;color:#fff">Ketinggian Air</h6>
+                                    <h2 style="font-weight:bold; font-size:3em; color:#fff"><span
+                                            id="ketinggian-air"></span>cm</h2>
                                 </div>
                             </div>
                         </div>
                     </div>
-                </div>
-                <div class="col-xl-6 active-p">
-                    <div class="card">
-                        <div class="card-body p-0">
-                            <div class="table-responsive active-projects">
-                                <div class="tbl-caption">
-                                    <h4 class="heading mb-0">Active Projects</h4>
-                                </div>
-                                <table id="projects-tbl" class="table">
-                                    <thead>
-                                        <tr>
-                                            <th>Project Name</th>
-                                            <th>Project Lead</th>
-                                            <th>Progress</th>
-                                            <th>Assignee</th>
-                                            <th>Status</th>
-                                            <th>Due Date</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr>
-                                            <td>Batman</td>
-                                            <td>
-                                                <div class="d-flex align-items-center">
-                                                    <img src="{{ url('public/assets') }}/images/contacts/pic1.jpg"
-                                                        class="avatar rounded-circle" alt="">
-                                                    <p class="mb-0 ms-2">Liam Risher</p>
-                                                </div>
-                                            </td>
-                                            <td class="pe-0">
-                                                <div class="tbl-progress-box">
-                                                    <div class="progress">
-                                                        <div class="progress-bar bg-primary"
-                                                            style="width:53%; height:5px; border-radius:4px;"
-                                                            role="progressbar"></div>
-                                                    </div>
-                                                    <span class="text-primary">53%</span>
-                                                </div>
-                                            </td>
-                                            <td class="pe-0">
-                                                <div class="avatar-list avatar-list-stacked">
-                                                    <img src="{{ url('public/assets') }}/images/contacts/pic1.jpg"
-                                                        class="avatar rounded-circle" alt="">
-                                                    <img src="{{ url('public/assets') }}/images/contacts/pic555.jpg"
-                                                        class="avatar rounded-circle" alt="">
-                                                    <img src="{{ url('public/assets') }}/images/contacts/pic666.jpg"
-                                                        class="avatar rounded-circle" alt="">
-                                                </div>
-                                            </td>
-                                            <td class="pe-0">
-                                                <span class="badge badge-primary light border-0">Inprogress</span>
-                                            </td>
-                                            <td>
-                                                <span>06 Sep 2021</span>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>Bender Project</td>
-                                            <td>
-                                                <div class="d-flex align-items-center">
-                                                    <img src="{{ url('public/assets') }}/images/contacts/pic2.jpg"
-                                                        class="avatar rounded-circle" alt="">
-                                                    <p class="mb-0 ms-2">Oliver Noah</p>
-                                                </div>
-                                            </td>
-                                            <td class="pe-0">
-                                                <div class="tbl-progress-box">
-                                                    <div class="progress">
-                                                        <div class="progress-bar bg-danger"
-                                                            style="width:30%; height:5px; border-radius:4px;"
-                                                            role="progressbar"></div>
-                                                    </div>
-                                                    <span class="text-danger">30%</span>
-                                                </div>
-                                            </td>
-                                            <td class="pe-0">
-                                                <div class="avatar-list avatar-list-stacked">
-                                                    <img src="{{ url('public/assets') }}/images/contacts/pic1.jpg"
-                                                        class="avatar rounded-circle" alt="">
-                                                    <img src="{{ url('public/assets') }}/images/contacts/pic555.jpg"
-                                                        class="avatar rounded-circle" alt="">
-                                                    <img src="{{ url('public/assets') }}/images/contacts/pic666.jpg"
-                                                        class="avatar rounded-circle" alt="">
-                                                </div>
-                                            </td>
-                                            <td class="pe-0">
-                                                <span class="badge badge-danger light border-0">Pending</span>
-                                            </td>
-                                            <td>
-                                                <span>06 Sep 2021</span>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>Canary</td>
-                                            <td>
-                                                <div class="d-flex align-items-center">
-                                                    <img src="{{ url('public/assets') }}/images/contacts/pic888.jpg"
-                                                        class="avatar rounded-circle" alt="">
-                                                    <p class="mb-0 ms-2">Elijah James</p>
-                                                </div>
-                                            </td>
-                                            <td class="pe-0">
-                                                <div class="tbl-progress-box">
-                                                    <div class="progress">
-                                                        <div class="progress-bar bg-success"
-                                                            style="width:40%; height:5px; border-radius:4px;"
-                                                            role="progressbar"></div>
-                                                    </div>
-                                                    <span class="text-success">40%</span>
-                                                </div>
-                                            </td>
-                                            <td class="pe-0">
-                                                <div class="avatar-list avatar-list-stacked">
-                                                    <img src="{{ url('public/assets') }}/images/contacts/pic666.jpg"
-                                                        class="avatar rounded-circle" alt="">
-                                                    <img src="{{ url('public/assets') }}/images/contacts/pic555.jpg"
-                                                        class="avatar rounded-circle" alt="">
-                                                    <img src="{{ url('public/assets') }}/images/contacts/pic1.jpg"
-                                                        class="avatar rounded-circle" alt="">
-                                                    <img src="{{ url('public/assets') }}/images/contacts/pic666.jpg"
-                                                        class="avatar rounded-circle" alt="">
-                                                </div>
-                                            </td>
-                                            <td class="pe-0">
-                                                <span class="badge badge-success light border-0">Completed</span>
-                                            </td>
-                                            <td>
-                                                <span>06 Sep 2021</span>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>Casanova</td>
-                                            <td>
-                                                <div class="d-flex align-items-center">
-                                                    <img src="{{ url('public/assets') }}/images/contacts/pic1.jpg"
-                                                        class="avatar rounded-circle" alt="">
-                                                    <p class="mb-0 ms-2">William Risher</p>
-                                                </div>
-                                            </td>
-                                            <td class="pe-0">
-                                                <div class="tbl-progress-box">
-                                                    <div class="progress">
-                                                        <div class="progress-bar bg-primary"
-                                                            style="width:53%; height:5px; border-radius:4px;"
-                                                            role="progressbar"></div>
-                                                    </div>
-                                                    <span class="text-primary">53%</span>
-                                                </div>
-                                            </td>
-                                            <td class="pe-0">
-                                                <div class="avatar-list avatar-list-stacked">
-                                                    <img src="{{ url('public/assets') }}/images/contacts/pic1.jpg"
-                                                        class="avatar rounded-circle" alt="">
-                                                    <img src="{{ url('public/assets') }}/images/contacts/pic555.jpg"
-                                                        class="avatar rounded-circle" alt="">
-                                                    <img src="{{ url('public/assets') }}/images/contacts/pic666.jpg"
-                                                        class="avatar rounded-circle" alt="">
-                                                </div>
-                                            </td>
-                                            <td class="pe-0">
-                                                <span class="badge badge-primary light border-0">Inprogress</span>
-                                            </td>
-                                            <td>
-                                                <span>06 Sep 2021</span>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>Bigfish</td>
-                                            <td>
-                                                <div class="d-flex align-items-center">
-                                                    <img src="{{ url('public/assets') }}/images/contacts/pic777.jpg"
-                                                        class="avatar rounded-circle" alt="">
-                                                    <p class="mb-0 ms-2">Donald Benjamin</p>
-                                                </div>
-                                            </td>
-                                            <td class="pe-0">
-                                                <div class="tbl-progress-box">
-                                                    <div class="progress">
-                                                        <div class="progress-bar bg-danger"
-                                                            style="width:30%; height:5px; border-radius:4px;"
-                                                            role="progressbar"></div>
-                                                    </div>
-                                                    <span class="text-danger">30%</span>
-                                                </div>
-                                            </td>
-                                            <td class="pe-0">
-                                                <div class="avatar-list avatar-list-stacked">
-                                                    <img src="{{ url('public/assets') }}/images/contacts/pic1.jpg"
-                                                        class="avatar rounded-circle" alt="">
-                                                    <img src="{{ url('public/assets') }}/images/contacts/pic777.jpg"
-                                                        class="avatar rounded-circle" alt="">
-                                                    <img src="{{ url('public/assets') }}/images/contacts/pic666.jpg"
-                                                        class="avatar rounded-circle" alt="">
-                                                </div>
-                                            </td>
-                                            <td class="pe-0">
-                                                <span class="badge badge-danger light border-0">Inprogress</span>
-                                            </td>
-                                            <td>
-                                                <span>06 Sep 2021</span>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>Matadors</td>
-                                            <td>
-                                                <div class="d-flex align-items-center">
-                                                    <img src="{{ url('public/assets') }}/images/contacts/pic888.jpg"
-                                                        class="avatar rounded-circle" alt="">
-                                                    <p class="mb-0 ms-2">Liam Risher</p>
-                                                </div>
-                                            </td>
-                                            <td class="pe-0">
-                                                <div class="tbl-progress-box">
-                                                    <div class="progress">
-                                                        <div class="progress-bar bg-primary"
-                                                            style="width:53%; height:5px; border-radius:4px;"
-                                                            role="progressbar"></div>
-                                                    </div>
-                                                    <span class="text-primary">53%</span>
-                                                </div>
-                                            </td>
-                                            <td class="pe-0">
-                                                <div class="avatar-list avatar-list-stacked">
-                                                    <img src="{{ url('public/assets') }}/images/contacts/pic777.jpg"
-                                                        class="avatar rounded-circle" alt="">
-                                                    <img src="{{ url('public/assets') }}/images/contacts/pic555.jpg"
-                                                        class="avatar rounded-circle" alt="">
-                                                    <img src="{{ url('public/assets') }}/images/contacts/pic666.jpg"
-                                                        class="avatar rounded-circle" alt="">
-                                                </div>
-                                            </td>
-                                            <td class="pe-0">
-                                                <span class="badge badge-primary light border-0">Inprogress</span>
-                                            </td>
-                                            <td>
-                                                <span>06 Sep 2021</span>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>Mercury</td>
-                                            <td>
-                                                <div class="d-flex align-items-center">
-                                                    <img src="{{ url('public/assets') }}/images/contacts/pic2.jpg"
-                                                        class="avatar rounded-circle" alt="">
-                                                    <p class="mb-0 ms-2">Oliver Noah</p>
-                                                </div>
-                                            </td>
-                                            <td class="pe-0">
-                                                <div class="tbl-progress-box">
-                                                    <div class="progress">
-                                                        <div class="progress-bar bg-danger"
-                                                            style="width:30%; height:5px; border-radius:4px;"
-                                                            role="progressbar"></div>
-                                                    </div>
-                                                    <span class="text-danger">30%</span>
-                                                </div>
-                                            </td>
-                                            <td class="pe-0">
-                                                <div class="avatar-list avatar-list-stacked">
-                                                    <img src="{{ url('public/assets') }}/images/contacts/pic1.jpg"
-                                                        class="avatar rounded-circle" alt="">
-                                                    <img src="{{ url('public/assets') }}/images/contacts/pic777.jpg"
-                                                        class="avatar rounded-circle" alt="">
-                                                    <img src="{{ url('public/assets') }}/images/contacts/pic666.jpg"
-                                                        class="avatar rounded-circle" alt="">
-                                                </div>
-                                            </td>
-                                            <td class="pe-0">
-                                                <span class="badge badge-danger light border-0">Pending</span>
-                                            </td>
-                                            <td>
-                                                <span>06 Sep 2021</span>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>Whistler</td>
-                                            <td>
-                                                <div class="d-flex align-items-center">
-                                                    <img src="{{ url('public/assets') }}/images/contacts/pic999.jpg"
-                                                        class="avatar rounded-circle" alt="">
-                                                    <p class="mb-0 ms-2">Elijah James</p>
-                                                </div>
-                                            </td>
-                                            <td class="pe-0">
-                                                <div class="tbl-progress-box">
-                                                    <div class="progress">
-                                                        <div class="progress-bar bg-success"
-                                                            style="width:40%; height:5px; border-radius:4px;"
-                                                            role="progressbar"></div>
-                                                    </div>
-                                                    <span class="text-success">40%</span>
-                                                </div>
-                                            </td>
-                                            <td class="pe-0">
-                                                <div class="avatar-list avatar-list-stacked">
-                                                    <img src="{{ url('public/assets') }}/images/contacts/pic666.jpg"
-                                                        class="avatar rounded-circle" alt="">
-                                                    <img src="{{ url('public/assets') }}/images/contacts/pic555.jpg"
-                                                        class="avatar rounded-circle" alt="">
-                                                    <img src="{{ url('public/assets') }}/images/contacts/pic1.jpg"
-                                                        class="avatar rounded-circle" alt="">
-                                                    <img src="{{ url('public/assets') }}/images/contacts/pic666.jpg"
-                                                        class="avatar rounded-circle" alt="">
-                                                </div>
-                                            </td>
-                                            <td class="pe-0">
-                                                <span class="badge badge-success light border-0">Completed</span>
-                                            </td>
-                                            <td>
-                                                <span>06 Sep 2021</span>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>Time Projects</td>
-                                            <td>
-                                                <div class="d-flex align-items-center">
-                                                    <img src="{{ url('public/assets') }}/images/contacts/pic2.jpg"
-                                                        class="avatar rounded-circle" alt="">
-                                                    <p class="mb-0 ms-2">Lucas</p>
-                                                </div>
-                                            </td>
-                                            <td class="pe-0">
-                                                <div class="tbl-progress-box">
-                                                    <div class="progress">
-                                                        <div class="progress-bar bg-danger"
-                                                            style="width:33%; height:5px; border-radius:4px;"
-                                                            role="progressbar"></div>
-                                                    </div>
-                                                    <span class="text-primary">33%</span>
-                                                </div>
-                                            </td>
-                                            <td class="pe-0">
-                                                <div class="avatar-list avatar-list-stacked">
-                                                    <img src="{{ url('public/assets') }}/images/contacts/pic1.jpg"
-                                                        class="avatar rounded-circle" alt="">
-                                                    <img src="{{ url('public/assets') }}/images/contacts/pic555.jpg"
-                                                        class="avatar rounded-circle" alt="">
-                                                    <img src="{{ url('public/assets') }}/images/contacts/pic999.jpg"
-                                                        class="avatar rounded-circle" alt="">
-                                                </div>
-                                            </td>
-                                            <td class="pe-0">
-                                                <span class="badge badge-primary light border-0">Inprogress</span>
-                                            </td>
-                                            <td>
-                                                <span>06 Sep 2021</span>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>Fast Ball</td>
-                                            <td>
-                                                <div class="d-flex align-items-center">
-                                                    <img src="{{ url('public/assets') }}/images/contacts/pic1.jpg"
-                                                        class="avatar rounded-circle" alt="">
-                                                    <p class="mb-0 ms-2">William Risher</p>
-                                                </div>
-                                            </td>
-                                            <td class="pe-0">
-                                                <div class="tbl-progress-box">
-                                                    <div class="progress">
-                                                        <div class="progress-bar bg-primary"
-                                                            style="width:53%; height:5px; border-radius:4px;"
-                                                            role="progressbar"></div>
-                                                    </div>
-                                                    <span class="text-primary">53%</span>
-                                                </div>
-                                            </td>
-                                            <td class="pe-0">
-                                                <div class="avatar-list avatar-list-stacked">
-                                                    <img src="{{ url('public/assets') }}/images/contacts/pic1.jpg"
-                                                        class="avatar rounded-circle" alt="">
-                                                    <img src="{{ url('public/assets') }}/images/contacts/pic555.jpg"
-                                                        class="avatar rounded-circle" alt="">
-                                                    <img src="{{ url('public/assets') }}/images/contacts/pic999.jpg"
-                                                        class="avatar rounded-circle" alt="">
-                                                </div>
-                                            </td>
-                                            <td class="pe-0">
-                                                <span class="badge badge-primary light border-0">Inprogress</span>
-                                            </td>
-                                            <td>
-                                                <span>06 Sep 2021</span>
-                                            </td>
-                                        </tr>
 
-                                    </tbody>
+                    <div class="col-xl-12" style="margin-bottom: 10px">
+                        <canvas id="realtime-chart"></canvas>
 
-                                </table>
-                            </div>
-                        </div>
+                        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+                        <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
                     </div>
                 </div>
-                <div class="col-xl-6 col-md-6 flag">
-                    <div class="card overflow-hidden">
-                        <div class="card-header border-0">
-                            <h4 class="heading mb-0">Active users</h4>
-                        </div>
-                        <div class="card-body pe-0">
-                            <div class="row">
-                                <div class="col-xl-8 active-map-main">
-                                    <div id="world-map" class="active-map"></div>
+            </div>
+            {{-- cuaca --}}
+            <div class="col-xl-6 col-lg-12 col-sm-12">
+                <div class="card overflow-hidden">
+                    <div id="bacground-img" class="text-center p-5 overlay-box"
+                        style="background-image: url(public/assets/images/card/mendung.jpg);">
+                        <img id="cuaca-img" src="{{ url('public/assets') }}/images/hujan.png" width="100"
+                            class="img-fluid rounded-circle" alt="">
+                        <h3 id="cuaca-text" class="mt-3 mb-0 text-white"></h3>
+                    </div>
+                    <div class="card-body">
+                        <div class="row" style="max-width: 100%; margin: 0 auto;">
+                            <div class="col-md-6">
+                                <div
+                                    style="border-radius: 50%; margin: 0 auto; width: 250px; height: 250px; border: 6px solid #0D99FF; color: #000000; text-align: center; font: 32px Arial, sans-serif; display: flex; flex-direction: column; justify-content: center;">
+                                    <img src="{{ url('public/assets') }}/icons/termometer.png" alt="Thermometer Icon"
+                                        style="width: 80px; height: 80px; margin: 20px auto 0; display: block; width:30px;height:30px;">
+                                    <h4 style="margin: 0; font-size: 24px; font-weight: bold; color: #0D99FF;">Suhu</h4>
+                                    <div
+                                        style="display: flex; justify-content: center; align-items: center; flex-direction: column; height: 100%;">
+                                        <span id="suhu" style="font-size: 64px; font-weight: bold;"></span>
+                                        <span style="font-size: 24px; font-weight: bold;">℃</span>
+                                    </div>
                                 </div>
-                                <div class="col-xl-4 active-country dz-scroll">
-                                    <div class="">
-                                        <div class="country-list">
-                                            <img src="{{ url('public/assets') }}/images/country/india.png"
-                                                alt="">
-                                            <div class="progress-box mt-0">
-                                                <div class="d-flex justify-content-between">
-                                                    <p class="mb-0 c-name">India</p>
-                                                    <p class="mb-0">50%</p>
-                                                </div>
-                                                <div class="progress">
-                                                    <div class="progress-bar bg-primary"
-                                                        style="width:60%; height:5px; border-radius:4px;"
-                                                        role="progressbar"></div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="country-list">
-                                            <img src="{{ url('public/assets') }}/images/country/canada.png"
-                                                alt="">
-                                            <div class="progress-box mt-0">
-                                                <div class="d-flex justify-content-between">
-                                                    <p class="mb-0 c-name">Canada</p>
-                                                    <p class="mb-0">30%</p>
-                                                </div>
-                                                <div class="progress">
-                                                    <div class="progress-bar bg-primary"
-                                                        style="width:30%; height:5px; border-radius:4px;"
-                                                        role="progressbar"></div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="country-list">
-                                            <img src="{{ url('public/assets') }}/images/country/russia.png"
-                                                alt="">
-                                            <div class="progress-box mt-0">
-                                                <div class="d-flex justify-content-between">
-                                                    <p class="mb-0 c-name">Russia</p>
-                                                    <p class="mb-0">20%</p>
-                                                </div>
-                                                <div class="progress">
-                                                    <div class="progress-bar bg-primary"
-                                                        style="width:20%; height:5px; border-radius:4px;"
-                                                        role="progressbar"></div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="country-list">
-                                            <img src="{{ url('public/assets') }}/images/country/uk.png" alt="">
-                                            <div class="progress-box mt-0">
-                                                <div class="d-flex justify-content-between">
-                                                    <p class="mb-0 c-name">United Kingdom</p>
-                                                    <p class="mb-0">40%</p>
-                                                </div>
-                                                <div class="progress">
-                                                    <div class="progress-bar bg-primary"
-                                                        style="width:40%; height:5px; border-radius:4px;"
-                                                        role="progressbar"></div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="country-list">
-                                            <img src="{{ url('public/assets') }}/images/country/aus.png" alt="">
-                                            <div class="progress-box mt-0">
-                                                <div class="d-flex justify-content-between">
-                                                    <p class="mb-0 c-name">Australia</p>
-                                                    <p class="mb-0">60%</p>
-                                                </div>
-                                                <div class="progress">
-                                                    <div class="progress-bar bg-primary"
-                                                        style="width:70%; height:5px; border-radius:4px;"
-                                                        role="progressbar"></div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="country-list">
-                                            <img src="{{ url('public/assets') }}/images/country/usa.png" alt="">
-                                            <div class="progress-box mt-0">
-                                                <div class="d-flex justify-content-between">
-                                                    <p class="mb-0 c-name">United States</p>
-                                                    <p class="mb-0">20%</p>
-                                                </div>
-                                                <div class="progress">
-                                                    <div class="progress-bar bg-primary"
-                                                        style="width:80%; height:5px; border-radius:4px;"
-                                                        role="progressbar"></div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="country-list">
-                                            <img src="{{ url('public/assets') }}/images/country/pak.png" alt="">
-                                            <div class="progress-box mt-0">
-                                                <div class="d-flex justify-content-between">
-                                                    <p class="mb-0 c-name">Pakistan</p>
-                                                    <p class="mb-0">20%</p>
-                                                </div>
-                                                <div class="progress">
-                                                    <div class="progress-bar bg-primary"
-                                                        style="width:20%; height:5px; border-radius:4px;"
-                                                        role="progressbar"></div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="country-list">
-                                            <img src="{{ url('public/assets') }}/images/country/germany.png"
-                                                alt="">
-                                            <div class="progress-box mt-0">
-                                                <div class="d-flex justify-content-between">
-                                                    <p class="mb-0 c-name">Germany</p>
-                                                    <p class="mb-0">80%</p>
-                                                </div>
-                                                <div class="progress">
-                                                    <div class="progress-bar bg-primary"
-                                                        style="width:80%; height:5px; border-radius:4px;"
-                                                        role="progressbar"></div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="country-list">
-                                            <img src="{{ url('public/assets') }}/images/country/uae.png" alt="">
-                                            <div class="progress-box mt-0">
-                                                <div class="d-flex justify-content-between">
-                                                    <p class="mb-0 c-name">UAE</p>
-                                                    <p class="mb-0">30%</p>
-                                                </div>
-                                                <div class="progress">
-                                                    <div class="progress-bar bg-primary"
-                                                        style="width:30%; height:5px; border-radius:4px;"
-                                                        role="progressbar"></div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="country-list">
-                                            <img src="{{ url('public/assets') }}/images/country/china.png"
-                                                alt="">
-                                            <div class="progress-box mt-0">
-                                                <div class="d-flex justify-content-between">
-                                                    <p class="mb-0 c-name">China</p>
-                                                    <p class="mb-0">40%</p>
-                                                </div>
-                                                <div class="progress">
-                                                    <div class="progress-bar bg-primary"
-                                                        style="width:40%; height:5px; border-radius:4px;"
-                                                        role="progressbar"></div>
-                                                </div>
-                                            </div>
-                                        </div>
-
+                            </div>
+                            <div class="col-md-6">
+                                <div
+                                    style="border-radius: 50%; margin: 0 auto; width: 250px; height: 250px; border: 6px solid #0D99FF; color: #000000; text-align: center; font: 32px Arial, sans-serif; display: flex; flex-direction: column; justify-content: center;">
+                                    <img src="{{ url('public/assets') }}/icons/humidity.png" alt="Humidity Icon"
+                                        style="width: 80px; height: 80px; margin: 20px auto 0; display: block; width:30px;height:30px;">
+                                    <h4 style="margin: 0; font-size: 24px; font-weight: bold; color: #0D99FF;">
+                                        Kelembapan
+                                    </h4>
+                                    <div
+                                        style="display: flex; justify-content: center; align-items: center; flex-direction: column; height: 100%;">
+                                        <span id="kelembapan" style="font-size: 64px; font-weight: bold;"></span>
+                                        <span style="font-size: 24px; font-weight: bold;">%</span>
                                     </div>
                                 </div>
                             </div>
@@ -689,12 +120,563 @@
                 </div>
             </div>
 
+            <div class="col-xl-6 active-p">
+                <div class="card">
+                    <div class="card-body p-0">
+                        <div class="table-responsive active-projects">
+                            <div class="tbl-caption">
+                                <h4 class="heading mb-0">Active Projects</h4>
+                            </div>
+                            <table id="projects-tbl" class="table">
+                                <thead>
+                                    <tr>
+                                        <th>Project Name</th>
+                                        <th>Project Lead</th>
+                                        <th>Progress</th>
+                                        <th>Assignee</th>
+                                        <th>Status</th>
+                                        <th>Due Date</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>Batman</td>
+                                        <td>
+                                            <div class="d-flex align-items-center">
+                                                <img src="{{ url('public/assets') }}/images/contacts/pic1.jpg"
+                                                    class="avatar rounded-circle" alt="">
+                                                <p class="mb-0 ms-2">Liam Risher</p>
+                                            </div>
+                                        </td>
+                                        <td class="pe-0">
+                                            <div class="tbl-progress-box">
+                                                <div class="progress">
+                                                    <div class="progress-bar bg-primary"
+                                                        style="width:53%; height:5px; border-radius:4px;"
+                                                        role="progressbar"></div>
+                                                </div>
+                                                <span class="text-primary">53%</span>
+                                            </div>
+                                        </td>
+                                        <td class="pe-0">
+                                            <div class="avatar-list avatar-list-stacked">
+                                                <img src="{{ url('public/assets') }}/images/contacts/pic1.jpg"
+                                                    class="avatar rounded-circle" alt="">
+                                                <img src="{{ url('public/assets') }}/images/contacts/pic555.jpg"
+                                                    class="avatar rounded-circle" alt="">
+                                                <img src="{{ url('public/assets') }}/images/contacts/pic666.jpg"
+                                                    class="avatar rounded-circle" alt="">
+                                            </div>
+                                        </td>
+                                        <td class="pe-0">
+                                            <span class="badge badge-primary light border-0">Inprogress</span>
+                                        </td>
+                                        <td>
+                                            <span>06 Sep 2021</span>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>Bender Project</td>
+                                        <td>
+                                            <div class="d-flex align-items-center">
+                                                <img src="{{ url('public/assets') }}/images/contacts/pic2.jpg"
+                                                    class="avatar rounded-circle" alt="">
+                                                <p class="mb-0 ms-2">Oliver Noah</p>
+                                            </div>
+                                        </td>
+                                        <td class="pe-0">
+                                            <div class="tbl-progress-box">
+                                                <div class="progress">
+                                                    <div class="progress-bar bg-danger"
+                                                        style="width:30%; height:5px; border-radius:4px;"
+                                                        role="progressbar"></div>
+                                                </div>
+                                                <span class="text-danger">30%</span>
+                                            </div>
+                                        </td>
+                                        <td class="pe-0">
+                                            <div class="avatar-list avatar-list-stacked">
+                                                <img src="{{ url('public/assets') }}/images/contacts/pic1.jpg"
+                                                    class="avatar rounded-circle" alt="">
+                                                <img src="{{ url('public/assets') }}/images/contacts/pic555.jpg"
+                                                    class="avatar rounded-circle" alt="">
+                                                <img src="{{ url('public/assets') }}/images/contacts/pic666.jpg"
+                                                    class="avatar rounded-circle" alt="">
+                                            </div>
+                                        </td>
+                                        <td class="pe-0">
+                                            <span class="badge badge-danger light border-0">Pending</span>
+                                        </td>
+                                        <td>
+                                            <span>06 Sep 2021</span>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>Canary</td>
+                                        <td>
+                                            <div class="d-flex align-items-center">
+                                                <img src="{{ url('public/assets') }}/images/contacts/pic888.jpg"
+                                                    class="avatar rounded-circle" alt="">
+                                                <p class="mb-0 ms-2">Elijah James</p>
+                                            </div>
+                                        </td>
+                                        <td class="pe-0">
+                                            <div class="tbl-progress-box">
+                                                <div class="progress">
+                                                    <div class="progress-bar bg-success"
+                                                        style="width:40%; height:5px; border-radius:4px;"
+                                                        role="progressbar"></div>
+                                                </div>
+                                                <span class="text-success">40%</span>
+                                            </div>
+                                        </td>
+                                        <td class="pe-0">
+                                            <div class="avatar-list avatar-list-stacked">
+                                                <img src="{{ url('public/assets') }}/images/contacts/pic666.jpg"
+                                                    class="avatar rounded-circle" alt="">
+                                                <img src="{{ url('public/assets') }}/images/contacts/pic555.jpg"
+                                                    class="avatar rounded-circle" alt="">
+                                                <img src="{{ url('public/assets') }}/images/contacts/pic1.jpg"
+                                                    class="avatar rounded-circle" alt="">
+                                                <img src="{{ url('public/assets') }}/images/contacts/pic666.jpg"
+                                                    class="avatar rounded-circle" alt="">
+                                            </div>
+                                        </td>
+                                        <td class="pe-0">
+                                            <span class="badge badge-success light border-0">Completed</span>
+                                        </td>
+                                        <td>
+                                            <span>06 Sep 2021</span>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>Casanova</td>
+                                        <td>
+                                            <div class="d-flex align-items-center">
+                                                <img src="{{ url('public/assets') }}/images/contacts/pic1.jpg"
+                                                    class="avatar rounded-circle" alt="">
+                                                <p class="mb-0 ms-2">William Risher</p>
+                                            </div>
+                                        </td>
+                                        <td class="pe-0">
+                                            <div class="tbl-progress-box">
+                                                <div class="progress">
+                                                    <div class="progress-bar bg-primary"
+                                                        style="width:53%; height:5px; border-radius:4px;"
+                                                        role="progressbar"></div>
+                                                </div>
+                                                <span class="text-primary">53%</span>
+                                            </div>
+                                        </td>
+                                        <td class="pe-0">
+                                            <div class="avatar-list avatar-list-stacked">
+                                                <img src="{{ url('public/assets') }}/images/contacts/pic1.jpg"
+                                                    class="avatar rounded-circle" alt="">
+                                                <img src="{{ url('public/assets') }}/images/contacts/pic555.jpg"
+                                                    class="avatar rounded-circle" alt="">
+                                                <img src="{{ url('public/assets') }}/images/contacts/pic666.jpg"
+                                                    class="avatar rounded-circle" alt="">
+                                            </div>
+                                        </td>
+                                        <td class="pe-0">
+                                            <span class="badge badge-primary light border-0">Inprogress</span>
+                                        </td>
+                                        <td>
+                                            <span>06 Sep 2021</span>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>Bigfish</td>
+                                        <td>
+                                            <div class="d-flex align-items-center">
+                                                <img src="{{ url('public/assets') }}/images/contacts/pic777.jpg"
+                                                    class="avatar rounded-circle" alt="">
+                                                <p class="mb-0 ms-2">Donald Benjamin</p>
+                                            </div>
+                                        </td>
+                                        <td class="pe-0">
+                                            <div class="tbl-progress-box">
+                                                <div class="progress">
+                                                    <div class="progress-bar bg-danger"
+                                                        style="width:30%; height:5px; border-radius:4px;"
+                                                        role="progressbar"></div>
+                                                </div>
+                                                <span class="text-danger">30%</span>
+                                            </div>
+                                        </td>
+                                        <td class="pe-0">
+                                            <div class="avatar-list avatar-list-stacked">
+                                                <img src="{{ url('public/assets') }}/images/contacts/pic1.jpg"
+                                                    class="avatar rounded-circle" alt="">
+                                                <img src="{{ url('public/assets') }}/images/contacts/pic777.jpg"
+                                                    class="avatar rounded-circle" alt="">
+                                                <img src="{{ url('public/assets') }}/images/contacts/pic666.jpg"
+                                                    class="avatar rounded-circle" alt="">
+                                            </div>
+                                        </td>
+                                        <td class="pe-0">
+                                            <span class="badge badge-danger light border-0">Inprogress</span>
+                                        </td>
+                                        <td>
+                                            <span>06 Sep 2021</span>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>Matadors</td>
+                                        <td>
+                                            <div class="d-flex align-items-center">
+                                                <img src="{{ url('public/assets') }}/images/contacts/pic888.jpg"
+                                                    class="avatar rounded-circle" alt="">
+                                                <p class="mb-0 ms-2">Liam Risher</p>
+                                            </div>
+                                        </td>
+                                        <td class="pe-0">
+                                            <div class="tbl-progress-box">
+                                                <div class="progress">
+                                                    <div class="progress-bar bg-primary"
+                                                        style="width:53%; height:5px; border-radius:4px;"
+                                                        role="progressbar"></div>
+                                                </div>
+                                                <span class="text-primary">53%</span>
+                                            </div>
+                                        </td>
+                                        <td class="pe-0">
+                                            <div class="avatar-list avatar-list-stacked">
+                                                <img src="{{ url('public/assets') }}/images/contacts/pic777.jpg"
+                                                    class="avatar rounded-circle" alt="">
+                                                <img src="{{ url('public/assets') }}/images/contacts/pic555.jpg"
+                                                    class="avatar rounded-circle" alt="">
+                                                <img src="{{ url('public/assets') }}/images/contacts/pic666.jpg"
+                                                    class="avatar rounded-circle" alt="">
+                                            </div>
+                                        </td>
+                                        <td class="pe-0">
+                                            <span class="badge badge-primary light border-0">Inprogress</span>
+                                        </td>
+                                        <td>
+                                            <span>06 Sep 2021</span>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>Mercury</td>
+                                        <td>
+                                            <div class="d-flex align-items-center">
+                                                <img src="{{ url('public/assets') }}/images/contacts/pic2.jpg"
+                                                    class="avatar rounded-circle" alt="">
+                                                <p class="mb-0 ms-2">Oliver Noah</p>
+                                            </div>
+                                        </td>
+                                        <td class="pe-0">
+                                            <div class="tbl-progress-box">
+                                                <div class="progress">
+                                                    <div class="progress-bar bg-danger"
+                                                        style="width:30%; height:5px; border-radius:4px;"
+                                                        role="progressbar"></div>
+                                                </div>
+                                                <span class="text-danger">30%</span>
+                                            </div>
+                                        </td>
+                                        <td class="pe-0">
+                                            <div class="avatar-list avatar-list-stacked">
+                                                <img src="{{ url('public/assets') }}/images/contacts/pic1.jpg"
+                                                    class="avatar rounded-circle" alt="">
+                                                <img src="{{ url('public/assets') }}/images/contacts/pic777.jpg"
+                                                    class="avatar rounded-circle" alt="">
+                                                <img src="{{ url('public/assets') }}/images/contacts/pic666.jpg"
+                                                    class="avatar rounded-circle" alt="">
+                                            </div>
+                                        </td>
+                                        <td class="pe-0">
+                                            <span class="badge badge-danger light border-0">Pending</span>
+                                        </td>
+                                        <td>
+                                            <span>06 Sep 2021</span>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>Whistler</td>
+                                        <td>
+                                            <div class="d-flex align-items-center">
+                                                <img src="{{ url('public/assets') }}/images/contacts/pic999.jpg"
+                                                    class="avatar rounded-circle" alt="">
+                                                <p class="mb-0 ms-2">Elijah James</p>
+                                            </div>
+                                        </td>
+                                        <td class="pe-0">
+                                            <div class="tbl-progress-box">
+                                                <div class="progress">
+                                                    <div class="progress-bar bg-success"
+                                                        style="width:40%; height:5px; border-radius:4px;"
+                                                        role="progressbar"></div>
+                                                </div>
+                                                <span class="text-success">40%</span>
+                                            </div>
+                                        </td>
+                                        <td class="pe-0">
+                                            <div class="avatar-list avatar-list-stacked">
+                                                <img src="{{ url('public/assets') }}/images/contacts/pic666.jpg"
+                                                    class="avatar rounded-circle" alt="">
+                                                <img src="{{ url('public/assets') }}/images/contacts/pic555.jpg"
+                                                    class="avatar rounded-circle" alt="">
+                                                <img src="{{ url('public/assets') }}/images/contacts/pic1.jpg"
+                                                    class="avatar rounded-circle" alt="">
+                                                <img src="{{ url('public/assets') }}/images/contacts/pic666.jpg"
+                                                    class="avatar rounded-circle" alt="">
+                                            </div>
+                                        </td>
+                                        <td class="pe-0">
+                                            <span class="badge badge-success light border-0">Completed</span>
+                                        </td>
+                                        <td>
+                                            <span>06 Sep 2021</span>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>Time Projects</td>
+                                        <td>
+                                            <div class="d-flex align-items-center">
+                                                <img src="{{ url('public/assets') }}/images/contacts/pic2.jpg"
+                                                    class="avatar rounded-circle" alt="">
+                                                <p class="mb-0 ms-2">Lucas</p>
+                                            </div>
+                                        </td>
+                                        <td class="pe-0">
+                                            <div class="tbl-progress-box">
+                                                <div class="progress">
+                                                    <div class="progress-bar bg-danger"
+                                                        style="width:33%; height:5px; border-radius:4px;"
+                                                        role="progressbar"></div>
+                                                </div>
+                                                <span class="text-primary">33%</span>
+                                            </div>
+                                        </td>
+                                        <td class="pe-0">
+                                            <div class="avatar-list avatar-list-stacked">
+                                                <img src="{{ url('public/assets') }}/images/contacts/pic1.jpg"
+                                                    class="avatar rounded-circle" alt="">
+                                                <img src="{{ url('public/assets') }}/images/contacts/pic555.jpg"
+                                                    class="avatar rounded-circle" alt="">
+                                                <img src="{{ url('public/assets') }}/images/contacts/pic999.jpg"
+                                                    class="avatar rounded-circle" alt="">
+                                            </div>
+                                        </td>
+                                        <td class="pe-0">
+                                            <span class="badge badge-primary light border-0">Inprogress</span>
+                                        </td>
+                                        <td>
+                                            <span>06 Sep 2021</span>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>Fast Ball</td>
+                                        <td>
+                                            <div class="d-flex align-items-center">
+                                                <img src="{{ url('public/assets') }}/images/contacts/pic1.jpg"
+                                                    class="avatar rounded-circle" alt="">
+                                                <p class="mb-0 ms-2">William Risher</p>
+                                            </div>
+                                        </td>
+                                        <td class="pe-0">
+                                            <div class="tbl-progress-box">
+                                                <div class="progress">
+                                                    <div class="progress-bar bg-primary"
+                                                        style="width:53%; height:5px; border-radius:4px;"
+                                                        role="progressbar"></div>
+                                                </div>
+                                                <span class="text-primary">53%</span>
+                                            </div>
+                                        </td>
+                                        <td class="pe-0">
+                                            <div class="avatar-list avatar-list-stacked">
+                                                <img src="{{ url('public/assets') }}/images/contacts/pic1.jpg"
+                                                    class="avatar rounded-circle" alt="">
+                                                <img src="{{ url('public/assets') }}/images/contacts/pic555.jpg"
+                                                    class="avatar rounded-circle" alt="">
+                                                <img src="{{ url('public/assets') }}/images/contacts/pic999.jpg"
+                                                    class="avatar rounded-circle" alt="">
+                                            </div>
+                                        </td>
+                                        <td class="pe-0">
+                                            <span class="badge badge-primary light border-0">Inprogress</span>
+                                        </td>
+                                        <td>
+                                            <span>06 Sep 2021</span>
+                                        </td>
+                                    </tr>
+
+                                </tbody>
+
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-xl-6 col-md-6 flag">
+                <div class="card overflow-hidden">
+                    <div class="card-header border-0">
+                        <h4 class="heading mb-0">Active users</h4>
+                    </div>
+                    <div class="card-body pe-0">
+                        <div class="row">
+                            <div class="col-xl-8 active-map-main">
+                                <div id="world-map" class="active-map"></div>
+                            </div>
+                            <div class="col-xl-4 active-country dz-scroll">
+                                <div class="">
+                                    <div class="country-list">
+                                        <img src="{{ url('public/assets') }}/images/country/india.png" alt="">
+                                        <div class="progress-box mt-0">
+                                            <div class="d-flex justify-content-between">
+                                                <p class="mb-0 c-name">India</p>
+                                                <p class="mb-0">50%</p>
+                                            </div>
+                                            <div class="progress">
+                                                <div class="progress-bar bg-primary"
+                                                    style="width:60%; height:5px; border-radius:4px;" role="progressbar">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="country-list">
+                                        <img src="{{ url('public/assets') }}/images/country/canada.png" alt="">
+                                        <div class="progress-box mt-0">
+                                            <div class="d-flex justify-content-between">
+                                                <p class="mb-0 c-name">Canada</p>
+                                                <p class="mb-0">30%</p>
+                                            </div>
+                                            <div class="progress">
+                                                <div class="progress-bar bg-primary"
+                                                    style="width:30%; height:5px; border-radius:4px;" role="progressbar">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="country-list">
+                                        <img src="{{ url('public/assets') }}/images/country/russia.png" alt="">
+                                        <div class="progress-box mt-0">
+                                            <div class="d-flex justify-content-between">
+                                                <p class="mb-0 c-name">Russia</p>
+                                                <p class="mb-0">20%</p>
+                                            </div>
+                                            <div class="progress">
+                                                <div class="progress-bar bg-primary"
+                                                    style="width:20%; height:5px; border-radius:4px;" role="progressbar">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="country-list">
+                                        <img src="{{ url('public/assets') }}/images/country/uk.png" alt="">
+                                        <div class="progress-box mt-0">
+                                            <div class="d-flex justify-content-between">
+                                                <p class="mb-0 c-name">United Kingdom</p>
+                                                <p class="mb-0">40%</p>
+                                            </div>
+                                            <div class="progress">
+                                                <div class="progress-bar bg-primary"
+                                                    style="width:40%; height:5px; border-radius:4px;" role="progressbar">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="country-list">
+                                        <img src="{{ url('public/assets') }}/images/country/aus.png" alt="">
+                                        <div class="progress-box mt-0">
+                                            <div class="d-flex justify-content-between">
+                                                <p class="mb-0 c-name">Australia</p>
+                                                <p class="mb-0">60%</p>
+                                            </div>
+                                            <div class="progress">
+                                                <div class="progress-bar bg-primary"
+                                                    style="width:70%; height:5px; border-radius:4px;" role="progressbar">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="country-list">
+                                        <img src="{{ url('public/assets') }}/images/country/usa.png" alt="">
+                                        <div class="progress-box mt-0">
+                                            <div class="d-flex justify-content-between">
+                                                <p class="mb-0 c-name">United States</p>
+                                                <p class="mb-0">20%</p>
+                                            </div>
+                                            <div class="progress">
+                                                <div class="progress-bar bg-primary"
+                                                    style="width:80%; height:5px; border-radius:4px;" role="progressbar">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="country-list">
+                                        <img src="{{ url('public/assets') }}/images/country/pak.png" alt="">
+                                        <div class="progress-box mt-0">
+                                            <div class="d-flex justify-content-between">
+                                                <p class="mb-0 c-name">Pakistan</p>
+                                                <p class="mb-0">20%</p>
+                                            </div>
+                                            <div class="progress">
+                                                <div class="progress-bar bg-primary"
+                                                    style="width:20%; height:5px; border-radius:4px;" role="progressbar">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="country-list">
+                                        <img src="{{ url('public/assets') }}/images/country/germany.png" alt="">
+                                        <div class="progress-box mt-0">
+                                            <div class="d-flex justify-content-between">
+                                                <p class="mb-0 c-name">Germany</p>
+                                                <p class="mb-0">80%</p>
+                                            </div>
+                                            <div class="progress">
+                                                <div class="progress-bar bg-primary"
+                                                    style="width:80%; height:5px; border-radius:4px;" role="progressbar">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="country-list">
+                                        <img src="{{ url('public/assets') }}/images/country/uae.png" alt="">
+                                        <div class="progress-box mt-0">
+                                            <div class="d-flex justify-content-between">
+                                                <p class="mb-0 c-name">UAE</p>
+                                                <p class="mb-0">30%</p>
+                                            </div>
+                                            <div class="progress">
+                                                <div class="progress-bar bg-primary"
+                                                    style="width:30%; height:5px; border-radius:4px;" role="progressbar">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="country-list">
+                                        <img src="{{ url('public/assets') }}/images/country/china.png" alt="">
+                                        <div class="progress-box mt-0">
+                                            <div class="d-flex justify-content-between">
+                                                <p class="mb-0 c-name">China</p>
+                                                <p class="mb-0">40%</p>
+                                            </div>
+                                            <div class="progress">
+                                                <div class="progress-bar bg-primary"
+                                                    style="width:40%; height:5px; border-radius:4px;" role="progressbar">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 
     <!--**********************************
-                                                                                                                                                                                                         Content body end
-                                                                                                                                                                                            ***********************************-->
+                                                                                                                                                                                                                                                                                         Content body end
+                                                                                                                                                                                                                                                                            ***********************************-->
     <div class="offcanvas offcanvas-end customeoff" tabindex="-1" id="offcanvasExample">
         <div class="offcanvas-header">
             <h5 class="modal-title" id="#gridSystemModal">Add Employee</h5>
@@ -1007,45 +989,60 @@
     {{-- secript chart --}}
     <script>
         const ctx = document.getElementById('realtime-chart').getContext('2d');
-    
+
         const chart = new Chart(ctx, {
             type: 'line',
             data: {
                 labels: [],
                 datasets: [{
-                    label: 'Realtime Data',
-                    data: [],
-                    borderWidth: 1
-                }]
+                        label: 'Kelembapan',
+                        data: [],
+                        borderWidth: 1
+                    },
+                    {
+                        label: 'Suhu',
+                        data: [],
+                        borderWidth: 1
+                    }
+                ]
             },
             options: {
                 scales: {
                     y: {
                         beginAtZero: true,
-                        max: 1100
+                        max: 100
                     }
                 }
             }
         });
-    
+
         setInterval(function() {
             $.ajax({
-                url: 'api/hujan',
+                url: 'apichart',
                 type: 'GET',
                 success: function(data) {
                     chart.data.labels.push(data.created_at);
-                    chart.data.datasets[0].data.push(data.value);
-                    // Batasi data pada chart hanya 5 data terbaru
                     if (chart.data.labels.length > 5) {
                         chart.data.labels = chart.data.labels.slice(-5);
+                    }
+
+                    // push data kelembapan sinyal
+                    chart.data.datasets[0].data.push(data.kelembapan_sinyal);
+                    if (chart.data.datasets[0].data.length > 5) {
                         chart.data.datasets[0].data = chart.data.datasets[0].data.slice(-5);
                     }
+
+                    // push data suhu
+                    chart.data.datasets[1].data.push(data.suhu);
+                    if (chart.data.datasets[1].data.length > 5) {
+                        chart.data.datasets[1].data = chart.data.datasets[1].data.slice(-5);
+                    }
+
                     chart.update();
                 }
             });
         }, 5000);
     </script>
-    
 
     {{--  scrip warning --}}
     <script>
@@ -1084,10 +1081,10 @@
         });
     </script>
 
-    {{-- css --}}
+    {{-- script cuaca --}}
     <style>
         #realtime-chart {
-        background-color: #fff;
-    }
+            background-color: #fff;
+        }
     </style>
 @endsection

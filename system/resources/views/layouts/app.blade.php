@@ -67,8 +67,23 @@
         {{-- start sidebar --}}
         @include('template.section.sidebar')
         {{-- end sidebar --}}
-
-        @yield('conten')
+        <div class="content-body">
+            <!-- row -->
+            <div class="page-titles">
+                <ol class="breadcrumb">
+                    <li>
+                        <h5 class="bc-title">Dashboard</h5>
+                    </li>
+                    <li class="">
+                        Home / 
+                    </li>
+                    <li class="active">@yield('header')</li>
+                </ol>
+                <a class="text-primary fs-13" data-bs-toggle="offcanvas" href="#offcanvasExample1" role="button"
+                    aria-controls="offcanvasExample1">+ Add Task</a>
+            </div>
+            @yield('conten')
+        </div>
 
         {{-- start footer --}}
         @include('template.section.footer')
@@ -130,7 +145,7 @@
 
     <!-- tagify -->
     <script src="{{ url('public/assets') }}vendor/tagify/dist/tagify.js"></script>
-    
+
 
 </body>
 

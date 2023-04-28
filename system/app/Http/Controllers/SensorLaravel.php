@@ -3,28 +3,26 @@
 namespace App\Http\Controllers;
 
 use App\Models\MSensor;
+use Illuminate\Support\Facades\DB;
 use Illuminate\View\View;
 
 class SensorLaravel extends Controller
 {
-    public function coba()
-    {
-        return view('sensor.index');
-    }
-    function apiChart()
-    {
-        $dailyData = MSensor::getDailyData();
-
-        return response()->json([
-            'Suhu' => $dailyData
-        ]);
-    }
     public function index()
     {
         $dailyData = MSensor::getDailyData();
         $sensor = MSensor::all()->take(1);
 
         return view('index', compact('dailyData', 'sensor'));
+    }
+    public function apiChart()
+    {
+        $data = DB::table('sensor')->latest()->first();
+        return response()->json([
+            'created_at' => $data->created_at,
+            'kelembapan_sinyal' => $data->kelembapan,
+            'suhu' => $data->suhu
+        ]);
     }
     public function getKIDStatus()
     {
@@ -61,12 +59,15 @@ class SensorLaravel extends Controller
     {
         return view('sensor.bacasuhu', ['nilaisensor' => $sensor->latest()->paginate(1)]);
     }
-
+    public function bacacuaca(MSensor $sensor): View
+    {
+        return view('sensor.bacacuaca', ['nilaisensor' => $sensor->latest()->paginate(1)]);
+    }
     public function bacakelembapan(MSensor $sensor): View
     {
         return view('sensor.bacakelembapan', ['nilaisensor' => $sensor->latest()->paginate(1)]);
     }
-
+    
     public function simpansensor()
     {
         MSensor::where('id', '321')->update(['suhu' => request()->nilaisuhu, 'kelembapan' => request()->nilaikelembapan]);
