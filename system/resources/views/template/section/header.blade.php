@@ -4,7 +4,7 @@
 <div class="nav-header">
     <a href="index.html" class="brand-logo">
         <img src="{{ url('public/assets') }}/images/logo/logo-transparant.png" height="50px" alt="Logo perusahaan">
-        <h5 style="margin-top:20px; margin-left:10px">Monitor SPB</h5>
+        <h5 style="margin-top:20px; margin-left:10px; color:azure">Monitor SPB</h5>
     </a>
     <div class="nav-control">
         <div class="hamburger">

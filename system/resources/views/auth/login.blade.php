@@ -80,12 +80,10 @@
                                                                     <label class="form-check-label"
                                                                         for="check1">Remember me</label>
                                                                 </span>
-                                                                <button
-                                                                    class="nav-link m-auto btn tp-btn-light btn-primary forget-tab "
-                                                                    id="nav-forget-tab" data-bs-toggle="tab"
-                                                                    data-bs-target="#nav-forget" type="button"
-                                                                    role="tab" aria-controls="nav-forget"
-                                                                    aria-selected="false">Forget Password ?</button>
+                                                                <a href="{{ url('forget-password') }}" type="button"
+                                                                    class="nav-link m-auto btn tp-btn-light btn-primary forget-tab">Forget
+                                                                    Password
+                                                                    ?</a>
                                                             </div>
                                                             <div class="dz-social ">
                                                                 <h5 class="form-title fs-20">Sign In With</h5>
@@ -117,31 +115,6 @@
                                                                 aria-selected="false">Create an account</button>
 
                                                         </div>
-                                                    </div>
-                                                    <div class="tab-pane fade" id="nav-forget" role="tabpanel"
-                                                        aria-labelledby="nav-forget-tab">
-                                                        <form class="dz-form">
-                                                            <h3 class="form-title m-t0">Forget Password ?</h3>
-                                                            <div class="dz-separator-outer m-b5">
-                                                                <div class="dz-separator bg-primary style-liner"></div>
-                                                            </div>
-                                                            <p>Enter your e-mail address below to reset your password.
-                                                            </p>
-                                                            <div class="form-group mb-4">
-                                                                <input name="dzName" required=""
-                                                                    class="form-control" placeholder="Email Address"
-                                                                    type="text">
-                                                            </div>
-                                                            <div class="form-group clearfix text-left">
-                                                                <button class=" active btn btn-primary"
-                                                                    id="nav-personal-tab" data-bs-toggle="tab"
-                                                                    data-bs-target="#nav-personal" type="button"
-                                                                    role="tab" aria-controls="nav-personal"
-                                                                    aria-selected="true">Back</button>
-                                                                <button
-                                                                    class="btn btn-primary float-end">Submit</button>
-                                                            </div>
-                                                        </form>
                                                     </div>
                                                     <div class="tab-pane fade" id="nav-sign" role="tabpanel"
                                                         aria-labelledby="nav-sign-tab">
@@ -209,8 +182,7 @@
                                         <div class=" bottom-footer clearfix m-t10 m-b20 row text-center">
                                             <div class="col-lg-12 text-center">
                                                 <span> © Copyright by <span class="heart"></span>
-                                                    <a href="javascript:void(0);">DexignZone </a> All rights
-                                                    reserved.</span>
+                                                    <a href="javascript:void(0);">Fathur Rahman </a></span>
                                             </div>
                                         </div>
                                     </div>

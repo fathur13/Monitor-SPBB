@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\MSensor;
+use Illuminate\Auth\Events\Validated;
 use Illuminate\Support\Facades\DB;
 use Illuminate\View\View;
 
@@ -25,7 +26,7 @@ class SensorLaravel extends Controller
         ]);
     }
     public function getKIDStatus()
-    {
+    {  
         // Mengambil data terbaru dari database
         $latestData = MSensor::orderBy('created_at', 'desc')->first();
 
