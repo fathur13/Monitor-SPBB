@@ -3,6 +3,7 @@
 use Illuminate\Http\Request;
 use App\Http\Controllers\API\ApiSensorController;
 use App\Http\Controllers\ApiController;
+use App\Http\Controllers\ApiPostController;
 use App\Models\MSensor;
 use Illuminate\Support\Facades\Route;
 use Spatie\FlareClient\Api;
@@ -23,10 +24,12 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 
 Route::get('/sensor', [ApiController::class, 'index']);
-// Route::get('sensor', [ApiController::class, 'index']);
 Route::get('/sensor/{id}', [ApiController::class, 'show']);
 Route::get('/sensors/latest', [ApiController::class, 'latest']);
 Route::get('/sensors/date_range', [ApiController::class, 'getByDateRange']);
 
 // Route::post('/api-post', [ApiController::class, 'store']);
 Route::post('post', [ApiController::class, 'store']);
+
+//post sensor ke database
+Route::post('/sensorpost', [ApiPostController::class, 'storeOrUpdate']);

@@ -11,6 +11,11 @@ use Illuminate\Support\Facades\Password;
 use Illuminate\Auth\Events\PasswordReset;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\ForgetPasswordController;
+use App\Http\Controllers\CuacaController;
+use App\Http\Controllers\KelembapanController;
+use App\Http\Controllers\KetinggianAirController;
+use App\Http\Controllers\SuhuController;
+use App\Models\SensorData;
 
 /*
 |--------------------------------------------------------------------------
@@ -35,6 +40,23 @@ Route::middleware('auth')->group(function () {
     Route::get('/apichart', [SensorLaravel::class, 'apiChart']);
     //route untuk menyimpan nilai sensor ke arduino
     Route::get('/simpan/{nilaisuhu}/{nilaikelembapan}', [SensorLaravel::class, 'simpansensor']);
+
+    //ketinggian air
+    Route::get('/ketinggian-air', [KetinggianAirController::class, 'index']);
+    Route::get('/charthari', [KetinggianAirController::class, 'charthari']);
+    Route::get('/chartair', [KetinggianAirController::class, 'apiChart']);
+
+    //Cuaca
+    Route::get('/cuaca', [CuacaController::class, 'index']);
+    Route::get('/chartkelembapan', [CuacaController::class, 'apiChart']);
+
+    //Suhu
+    Route::get('/suhu', [SuhuController::class, 'index']);
+    Route::get('/chartsuhu', [SuhuController::class, 'apiChart']);
+
+    //kelembapan 
+    Route::get('/kelembapan', [KelembapanController::class, 'index']);
+    Route::get('/chartkelembapan', [KelembapanController::class, 'apiChart']);
 });
 Route::get('/', [LoginController::class, 'showLoginForm'])->name('login');
 Route::get('/login', [LoginController::class, 'showLoginForm'])->name('login');
@@ -46,3 +68,5 @@ Route::get('/forget-password', [ForgetPasswordController::class, 'forgetPassword
 Route::post('/forget-password', [ForgetPasswordController::class, 'postForgetPassword'])->middleware('guest')->name('password.email');
 Route::get('/reset-password/{token}', [ForgetPasswordController::class, 'risetPassword'])->middleware('guest')->name('password.reset');
 Route::post('/reset-password', [ForgetPasswordController::class, 'postRisetPassword'])->middleware('guest')->name('password.update');
+
+

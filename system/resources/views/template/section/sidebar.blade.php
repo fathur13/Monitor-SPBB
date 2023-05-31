@@ -37,10 +37,10 @@
                     <span class="nav-text">Data</span>
                 </a>
                 <ul aria-expanded="false">
-                    <li><a href="{{ url('public-api') }}">Ketinggian Air</a></li>
-                    <li><a href="{{ url('api') }}">Suhu</a></li>
-                    <li><a href="{{ url('api-restfull') }}">Kelenbapan</a></li>
-                    <li><a href="{{ url('public-api') }}">cuaca</a></li>
+                    <li><a href="{{ url('ketinggian-air') }}">Ketinggian Air</a></li>
+                    <li><a href="{{ url('suhu') }}">Suhu</a></li>
+                    <li><a href="{{ url('kelembapan') }}">Kelenbapan</a></li>
+                    <li><a href="{{ url('cuaca') }}">cuaca</a></li>
                 </ul>
             </li>
             <li><a class="has-arrow " href="javascript:void(0);" aria-expanded="false">

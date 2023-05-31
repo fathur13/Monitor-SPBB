@@ -72,10 +72,7 @@
             <div class="page-titles">
                 <ol class="breadcrumb">
                     <li>
-                        <h5 class="bc-title">Dashboard</h5>
-                    </li>
-                    <li class="">
-                        Home / 
+                        <h5 class="bc-title">@yield('judul')</h5>
                     </li>
                     <li class="active">@yield('header')</li>
                 </ol>

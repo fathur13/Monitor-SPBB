@@ -1,7 +1,7 @@
 @extends('layouts.app')
 @section('title', 'Login')
-@section('header', 'Dashboard')
-@section('judul', 'Dashboard')
+@section('header', 'Data/Cuaca')
+@section('judul', 'Cuaca')
 @section('conten')
     <style type="text/css">
         #myChart {
@@ -46,77 +46,25 @@
     <script src="https://code.highcharts.com/modules/series-label.js"></script>
     <script src="https://code.highcharts.com/modules/exporting.js"></script>
     <script src="https://code.highcharts.com/modules/export-data.js"></script>
+    <script src="https://code.highcharts.com/modules/accessibility.js"></script>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
     <div class="container-fluid">
         <div class="row">
             <div class="col-xl-6 wid-100">
-                <div class="row">
-                    <div class="col-md-12 card" id="kid-status-card">
-                        <div class="card-body">
-                            <div class="students d-flex align-items-center justify-content-between flex-wrap">
-                                <div>
-                                    <h5>Status KID</h5>
-                                    <h1 style="font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;">
-                                        <span id="kid-status">-</span>
-                                    </h1>
-                                </div>
-                                <div class="text-right">
-                                    <h6 style="font-weight:bold;color:#fff">Ketinggian Air</h6>
-                                    <h2 style="font-weight:bold; font-size:3em; color:#fff"><span
-                                            id="ketinggian-air"></span>cm</h2>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="col-xl-12" style="margin-bottom: 10px">
-                        <canvas id="realtime-chart"></canvas>
-
-                        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-                        <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-                    </div>
+                <div class="col-xl-12" style="margin-bottom: 10px">
+                    <canvas id="realtime-chart"></canvas>
                 </div>
             </div>
-            {{-- cuaca suhu --}}
             <div class="col-xl-6 col-lg-12 col-sm-12">
                 <div class="card overflow-hidden">
                     <div id="bacground-img" class="text-center p-5 overlay-box"
                         style="background-image: url(public/assets/images/card/mendung.jpg);">
-                        <img id="cuaca-img" src="{{ url('public/assets') }}/images/hujan.png" width="100"
+                        <img id="cuaca-img" src="{{ url('public/assets') }}/images/hujan.png" width="250"
                             class="img-fluid rounded-circle" alt="">
                         <h3 id="cuaca-text" class="mt-3 mb-0 text-white"></h3>
-                    </div>
-                    <div class="card-body">
-                        <div class="row" style="max-width: 100%; margin: 0 auto;">
-                            <div class="col-md-6">
-                                <div
-                                    style="border-radius: 50%; margin: 0 auto; width: 250px; height: 250px; border: 6px solid #0D99FF; color: #000000; text-align: center; font: 32px Arial, sans-serif; display: flex; flex-direction: column; justify-content: center;">
-                                    <img src="{{ url('public/assets') }}/icons/termometer.png" alt="Thermometer Icon"
-                                        style="width: 80px; height: 80px; margin: 20px auto 0; display: block; width:30px;height:30px;">
-                                    <h4 style="margin: 0; font-size: 24px; font-weight: bold; color: #0D99FF;">Suhu</h4>
-                                    <div
-                                        style="display: flex; justify-content: center; align-items: center; flex-direction: column; height: 100%;">
-                                        <span id="suhu" style="font-size: 64px; font-weight: bold;"></span>
-                                        <span style="font-size: 24px; font-weight: bold;">℃</span>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-md-6">
-                                <div
-                                    style="border-radius: 50%; margin: 0 auto; width: 250px; height: 250px; border: 6px solid #0D99FF; color: #000000; text-align: center; font: 32px Arial, sans-serif; display: flex; flex-direction: column; justify-content: center;">
-                                    <img src="{{ url('public/assets') }}/icons/humidity.png" alt="Humidity Icon"
-                                        style="width: 80px; height: 80px; margin: 20px auto 0; display: block; width:30px;height:30px;">
-                                    <h4 style="margin: 0; font-size: 24px; font-weight: bold; color: #0D99FF;">
-                                        Kelembapan
-                                    </h4>
-                                    <div
-                                        style="display: flex; justify-content: center; align-items: center; flex-direction: column; height: 100%;">
-                                        <span id="kelembapan" style="font-size: 64px; font-weight: bold;"></span>
-                                        <span style="font-size: 24px; font-weight: bold;">%</span>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
                     </div>
                 </div>
             </div>
@@ -672,12 +620,13 @@
                     </div>
                 </div>
             </div>
+
         </div>
     </div>
 
     <!--**********************************
-                                                                                                                                                                                                                                                                                         Content body end
-                                                                                                                                                                                                                                                                            ***********************************-->
+                                                                                                                                                                                                                                                                                                                                                                                                                                                             Content body end
+                                                                                                                                                                                                                                                                                                                                                                                                                                                ***********************************-->
     <div class="offcanvas offcanvas-end customeoff" tabindex="-1" id="offcanvasExample">
         <div class="offcanvas-header">
             <h5 class="modal-title" id="#gridSystemModal">Add Employee</h5>
@@ -987,7 +936,7 @@
             </div>
         </div>
     </div>
-    {{-- secript chart --}}
+    {{-- secript chart per Detik --}}
     <script>
         const ctx = document.getElementById('realtime-chart').getContext('2d');
 
@@ -996,91 +945,57 @@
             data: {
                 labels: [],
                 datasets: [{
-                        label: 'Kelembapan',
-                        data: [],
-                        borderWidth: 1
-                    },
-                    {
-                        label: 'Suhu',
-                        data: [],
-                        borderWidth: 1
-                    }
-                ]
+                    label: 'Kelembapan Udara',
+                    data: [],
+                    borderWidth: 1
+                }]
             },
             options: {
                 scales: {
                     y: {
                         beginAtZero: true,
-                        max: 100
+                        title: {
+                            display: true,
+                            text: 'Kelembapan udara'
+                        }
                     }
                 }
             }
         });
 
-        setInterval(function() {
+        $(document).ready(function() {
+            loadDataDetik();
+        });
+
+        setInterval(loadDataDetik, 5000);
+
+        function loadDataDetik() {
             $.ajax({
-                url: 'apichart',
+                url: 'chartkelembapan',
                 type: 'GET',
                 success: function(data) {
-                    chart.data.labels.push(data.created_at);
+                    // mendapatkan waktu dari data.created_at
+                    var waktu = new Date(data.created_at).toLocaleTimeString();
+
+                    // menambahkan waktu ke array label
+                    chart.data.labels.push(waktu);
+
                     if (chart.data.labels.length > 5) {
                         chart.data.labels = chart.data.labels.slice(-5);
                     }
 
                     // push data kelembapan sinyal
-                    chart.data.datasets[0].data.push(data.kelembapan_sinyal);
+                    chart.data.datasets[0].data.push(data.kelembapan);
                     if (chart.data.datasets[0].data.length > 5) {
                         chart.data.datasets[0].data = chart.data.datasets[0].data.slice(-5);
-                    }
-
-                    // push data suhu
-                    chart.data.datasets[1].data.push(data.suhu);
-                    if (chart.data.datasets[1].data.length > 5) {
-                        chart.data.datasets[1].data = chart.data.datasets[1].data.slice(-5);
                     }
 
                     chart.update();
                 }
             });
-        }, 5000);
+        }
     </script>
 
-    {{--  scrip warning --}}
-    <script>
-        $(document).ready(function() {
-            // Membuat permintaan setiap 1 detik untuk mendapatkan status KID terbaru dari server
-            setInterval(function() {
-                $.ajax({
-                    url: "{{ route('get-kid-status') }}",
-                    type: "GET",
-                    dataType: "json",
-                    success: function(data) {
-                        // Mengubah nilai data ketinggian air dengan mengurangi 200
-                        data.ketinggian_air -= 200;
-
-                        // Jika nilai ketinggian air di atas 200 cm, ubah menjadi 0
-                        if (data.ketinggian_air > 0) {
-                            data.ketinggian_air = 0;
-                        }
-
-                        // Menampilkan status KID dan ketinggian air terbaru pada halaman web
-                        $('#kid-status').html(data.status);
-                        $('#kid-status-card').removeClass(
-                            'bg-danger bg-warning bg-info bg-success').addClass('bg-' + data
-                            .color);
-                        $('#ketinggian-air').html(Math.abs(data.ketinggian_air).toFixed(2));
-
-                        // Menambahkan border warna merah pada kartu jika status KID adalah "Tenggelam"
-                        if (data.status === "Tenggelam") {
-                            $('#kid-status-card').addClass('border-danger');
-                        } else {
-                            $('#kid-status-card').removeClass('border-danger');
-                        }
-                    }
-                });
-            }, 1000);
-        });
-    </script>
 
     {{-- script cuaca --}}
     <style>

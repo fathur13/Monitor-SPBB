@@ -1,7 +1,7 @@
 @extends('layouts.app')
 @section('title', 'Login')
-@section('header', 'Dashboard')
-@section('judul', 'Dashboard')
+@section('header', 'Data/Ketinggian Air')
+@section('judul', 'Ketinggian Air')
 @section('conten')
     <style type="text/css">
         #myChart {
@@ -13,107 +13,212 @@
     {{-- panggil file jquery untuk proses realtime --}}
     <script type="text/javascript" src="{{ url('public/assets/jquery/jquery.min.js') }}"></script>
 
-    {{-- ajax untuk realtime --}}
-    <script type="text/javascript">
-        $(document).ready(function() {
-            setInterval(function() {
-                $("#suhu").load("{{ url('bacasuhu') }}");
-                $("#kelembapan").load("{{ url('bacakelembapan') }}");
-                // $("#cuaca").load("{{ url('bacacuaca') }}");
-                $.get("{{ url('bacacuaca') }}", function(data) {
-                    // memeriksa apakah sedang hujan atau tidak
-                    if (data == "is raining!") {
-                        // mengubah gambar menjadi gambar hujan
-                        $("#cuaca-img").attr("src",
-                            "{{ url('public/assets') }}/images/card/hujan.png");
-                        // mengubah teks menjadi "Hujan"
-                        $("#cuaca-text").text("is raining!");
-                    } else {
-                        // mengubah gambar menjadi gambar tidak hujan
-                        $("#cuaca-img").attr("src",
-                            "{{ url('public/assets') }}/images/card/cerah.png");
-                        // mengubah teks menjadi "Tidak hujan"
-                        $("#cuaca-text").text("is not raining!");
-                    }
-                });
-            }, 1000);
-
-        })
-    </script>
-
     {{-- chart  --}}
     <script src="https://code.highcharts.com/highcharts.js"></script>
     <script src="https://code.highcharts.com/modules/series-label.js"></script>
     <script src="https://code.highcharts.com/modules/exporting.js"></script>
     <script src="https://code.highcharts.com/modules/export-data.js"></script>
+    <script src="https://code.highcharts.com/modules/accessibility.js"></script>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
     <div class="container-fluid">
         <div class="row">
-            <div class="col-xl-6 wid-100">
-                <div class="row">
-                    <div class="col-md-12 card" id="kid-status-card">
-                        <div class="card-body">
-                            <div class="students d-flex align-items-center justify-content-between flex-wrap">
-                                <div>
-                                    <h5>Status KID</h5>
-                                    <h1 style="font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;">
-                                        <span id="kid-status">-</span>
-                                    </h1>
-                                </div>
-                                <div class="text-right">
-                                    <h6 style="font-weight:bold;color:#fff">Ketinggian Air</h6>
-                                    <h2 style="font-weight:bold; font-size:3em; color:#fff"><span
-                                            id="ketinggian-air"></span>cm</h2>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="col-xl-12" style="margin-bottom: 10px">
-                        <canvas id="realtime-chart"></canvas>
-
-                        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-                        <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-                    </div>
-                </div>
-            </div>
-            {{-- cuaca suhu --}}
-            <div class="col-xl-6 col-lg-12 col-sm-12">
-                <div class="card overflow-hidden">
-                    <div id="bacground-img" class="text-center p-5 overlay-box"
-                        style="background-image: url(public/assets/images/card/mendung.jpg);">
-                        <img id="cuaca-img" src="{{ url('public/assets') }}/images/hujan.png" width="100"
-                            class="img-fluid rounded-circle" alt="">
-                        <h3 id="cuaca-text" class="mt-3 mb-0 text-white"></h3>
-                    </div>
+            <div class="col-xl-12 wid-100">
+                <div class="col-md-12 card" id="kid-status-card">
                     <div class="card-body">
-                        <div class="row" style="max-width: 100%; margin: 0 auto;">
-                            <div class="col-md-6">
-                                <div
-                                    style="border-radius: 50%; margin: 0 auto; width: 250px; height: 250px; border: 6px solid #0D99FF; color: #000000; text-align: center; font: 32px Arial, sans-serif; display: flex; flex-direction: column; justify-content: center;">
-                                    <img src="{{ url('public/assets') }}/icons/termometer.png" alt="Thermometer Icon"
-                                        style="width: 80px; height: 80px; margin: 20px auto 0; display: block; width:30px;height:30px;">
-                                    <h4 style="margin: 0; font-size: 24px; font-weight: bold; color: #0D99FF;">Suhu</h4>
-                                    <div
-                                        style="display: flex; justify-content: center; align-items: center; flex-direction: column; height: 100%;">
-                                        <span id="suhu" style="font-size: 64px; font-weight: bold;"></span>
-                                        <span style="font-size: 24px; font-weight: bold;">℃</span>
-                                    </div>
-                                </div>
+                        <div class="students d-flex align-items-center justify-content-between flex-wrap">
+                            <div>
+                                <h5>Status KID</h5>
+                                <h1 style="font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;">
+                                    <span id="kid-status">-</span>
+                                </h1>
                             </div>
-                            <div class="col-md-6">
-                                <div
-                                    style="border-radius: 50%; margin: 0 auto; width: 250px; height: 250px; border: 6px solid #0D99FF; color: #000000; text-align: center; font: 32px Arial, sans-serif; display: flex; flex-direction: column; justify-content: center;">
-                                    <img src="{{ url('public/assets') }}/icons/humidity.png" alt="Humidity Icon"
-                                        style="width: 80px; height: 80px; margin: 20px auto 0; display: block; width:30px;height:30px;">
-                                    <h4 style="margin: 0; font-size: 24px; font-weight: bold; color: #0D99FF;">
-                                        Kelembapan
-                                    </h4>
-                                    <div
-                                        style="display: flex; justify-content: center; align-items: center; flex-direction: column; height: 100%;">
-                                        <span id="kelembapan" style="font-size: 64px; font-weight: bold;"></span>
-                                        <span style="font-size: 24px; font-weight: bold;">%</span>
+                            <div class="text-right">
+                                <h6 style="font-weight:bold;color:#fff">Ketinggian Air</h6>
+                                <h2 style="font-weight:bold; font-size:3em; color:#fff"><span id="ketinggian-air"></span>cm
+                                </h2>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xl-6 wid-100">
+                <div class="col-xl-12" style="margin-bottom: 10px">
+                    <canvas id="realtime-chart"></canvas>
+                </div>
+            </div>
+            <div class="col-xl-6 wid-100">
+                <div class="col-xl-12" style="margin-bottom: 10px">
+                    <canvas id="realtime-chart-2"></canvas>
+                </div>
+            </div>
+            <div class="col-xl-6 wid-100">
+                {{-- <figure class="highcharts-figure">
+                    <div id="chart-container"></div>
+                </figure> --}}
+                <div class="col-xl-12" style="margin-bottom: 10px">
+                    <div class="chart-container">
+                        <canvas id="realtime-chart-3"></canvas>
+                        <button id="download-btn">Download Chart</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-xl-6 col-md-6 flag">
+                <div class="card overflow-hidden">
+                    <div class="card-header border-0">
+                        <h4 class="heading mb-0">Active users</h4>
+                    </div>
+                    <div class="card-body pe-0">
+                        <div class="row">
+                            <div class="col-xl-8 active-map-main">
+                                <div id="world-map" class="active-map"></div>
+                            </div>
+                            <div class="col-xl-4 active-country dz-scroll">
+                                <div class="">
+                                    <div class="country-list">
+                                        <img src="{{ url('public/assets') }}/images/country/india.png" alt="">
+                                        <div class="progress-box mt-0">
+                                            <div class="d-flex justify-content-between">
+                                                <p class="mb-0 c-name">India</p>
+                                                <p class="mb-0">50%</p>
+                                            </div>
+                                            <div class="progress">
+                                                <div class="progress-bar bg-primary"
+                                                    style="width:60%; height:5px; border-radius:4px;" role="progressbar">
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
+                                    <div class="country-list">
+                                        <img src="{{ url('public/assets') }}/images/country/canada.png" alt="">
+                                        <div class="progress-box mt-0">
+                                            <div class="d-flex justify-content-between">
+                                                <p class="mb-0 c-name">Canada</p>
+                                                <p class="mb-0">30%</p>
+                                            </div>
+                                            <div class="progress">
+                                                <div class="progress-bar bg-primary"
+                                                    style="width:30%; height:5px; border-radius:4px;" role="progressbar">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="country-list">
+                                        <img src="{{ url('public/assets') }}/images/country/russia.png" alt="">
+                                        <div class="progress-box mt-0">
+                                            <div class="d-flex justify-content-between">
+                                                <p class="mb-0 c-name">Russia</p>
+                                                <p class="mb-0">20%</p>
+                                            </div>
+                                            <div class="progress">
+                                                <div class="progress-bar bg-primary"
+                                                    style="width:20%; height:5px; border-radius:4px;" role="progressbar">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="country-list">
+                                        <img src="{{ url('public/assets') }}/images/country/uk.png" alt="">
+                                        <div class="progress-box mt-0">
+                                            <div class="d-flex justify-content-between">
+                                                <p class="mb-0 c-name">United Kingdom</p>
+                                                <p class="mb-0">40%</p>
+                                            </div>
+                                            <div class="progress">
+                                                <div class="progress-bar bg-primary"
+                                                    style="width:40%; height:5px; border-radius:4px;" role="progressbar">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="country-list">
+                                        <img src="{{ url('public/assets') }}/images/country/aus.png" alt="">
+                                        <div class="progress-box mt-0">
+                                            <div class="d-flex justify-content-between">
+                                                <p class="mb-0 c-name">Australia</p>
+                                                <p class="mb-0">60%</p>
+                                            </div>
+                                            <div class="progress">
+                                                <div class="progress-bar bg-primary"
+                                                    style="width:70%; height:5px; border-radius:4px;" role="progressbar">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="country-list">
+                                        <img src="{{ url('public/assets') }}/images/country/usa.png" alt="">
+                                        <div class="progress-box mt-0">
+                                            <div class="d-flex justify-content-between">
+                                                <p class="mb-0 c-name">United States</p>
+                                                <p class="mb-0">20%</p>
+                                            </div>
+                                            <div class="progress">
+                                                <div class="progress-bar bg-primary"
+                                                    style="width:80%; height:5px; border-radius:4px;" role="progressbar">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="country-list">
+                                        <img src="{{ url('public/assets') }}/images/country/pak.png" alt="">
+                                        <div class="progress-box mt-0">
+                                            <div class="d-flex justify-content-between">
+                                                <p class="mb-0 c-name">Pakistan</p>
+                                                <p class="mb-0">20%</p>
+                                            </div>
+                                            <div class="progress">
+                                                <div class="progress-bar bg-primary"
+                                                    style="width:20%; height:5px; border-radius:4px;" role="progressbar">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="country-list">
+                                        <img src="{{ url('public/assets') }}/images/country/germany.png" alt="">
+                                        <div class="progress-box mt-0">
+                                            <div class="d-flex justify-content-between">
+                                                <p class="mb-0 c-name">Germany</p>
+                                                <p class="mb-0">80%</p>
+                                            </div>
+                                            <div class="progress">
+                                                <div class="progress-bar bg-primary"
+                                                    style="width:80%; height:5px; border-radius:4px;" role="progressbar">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="country-list">
+                                        <img src="{{ url('public/assets') }}/images/country/uae.png" alt="">
+                                        <div class="progress-box mt-0">
+                                            <div class="d-flex justify-content-between">
+                                                <p class="mb-0 c-name">UAE</p>
+                                                <p class="mb-0">30%</p>
+                                            </div>
+                                            <div class="progress">
+                                                <div class="progress-bar bg-primary"
+                                                    style="width:30%; height:5px; border-radius:4px;" role="progressbar">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="country-list">
+                                        <img src="{{ url('public/assets') }}/images/country/china.png" alt="">
+                                        <div class="progress-box mt-0">
+                                            <div class="d-flex justify-content-between">
+                                                <p class="mb-0 c-name">China</p>
+                                                <p class="mb-0">40%</p>
+                                            </div>
+                                            <div class="progress">
+                                                <div class="progress-bar bg-primary"
+                                                    style="width:40%; height:5px; border-radius:4px;" role="progressbar">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
                                 </div>
                             </div>
                         </div>
@@ -121,7 +226,7 @@
                 </div>
             </div>
 
-            <div class="col-xl-6 active-p">
+            <div class="col-xl-12 active-p">
                 <div class="card">
                     <div class="card-body p-0">
                         <div class="table-responsive active-projects">
@@ -512,172 +617,12 @@
                     </div>
                 </div>
             </div>
-
-            <div class="col-xl-6 col-md-6 flag">
-                <div class="card overflow-hidden">
-                    <div class="card-header border-0">
-                        <h4 class="heading mb-0">Active users</h4>
-                    </div>
-                    <div class="card-body pe-0">
-                        <div class="row">
-                            <div class="col-xl-8 active-map-main">
-                                <div id="world-map" class="active-map"></div>
-                            </div>
-                            <div class="col-xl-4 active-country dz-scroll">
-                                <div class="">
-                                    <div class="country-list">
-                                        <img src="{{ url('public/assets') }}/images/country/india.png" alt="">
-                                        <div class="progress-box mt-0">
-                                            <div class="d-flex justify-content-between">
-                                                <p class="mb-0 c-name">India</p>
-                                                <p class="mb-0">50%</p>
-                                            </div>
-                                            <div class="progress">
-                                                <div class="progress-bar bg-primary"
-                                                    style="width:60%; height:5px; border-radius:4px;" role="progressbar">
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="country-list">
-                                        <img src="{{ url('public/assets') }}/images/country/canada.png" alt="">
-                                        <div class="progress-box mt-0">
-                                            <div class="d-flex justify-content-between">
-                                                <p class="mb-0 c-name">Canada</p>
-                                                <p class="mb-0">30%</p>
-                                            </div>
-                                            <div class="progress">
-                                                <div class="progress-bar bg-primary"
-                                                    style="width:30%; height:5px; border-radius:4px;" role="progressbar">
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="country-list">
-                                        <img src="{{ url('public/assets') }}/images/country/russia.png" alt="">
-                                        <div class="progress-box mt-0">
-                                            <div class="d-flex justify-content-between">
-                                                <p class="mb-0 c-name">Russia</p>
-                                                <p class="mb-0">20%</p>
-                                            </div>
-                                            <div class="progress">
-                                                <div class="progress-bar bg-primary"
-                                                    style="width:20%; height:5px; border-radius:4px;" role="progressbar">
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="country-list">
-                                        <img src="{{ url('public/assets') }}/images/country/uk.png" alt="">
-                                        <div class="progress-box mt-0">
-                                            <div class="d-flex justify-content-between">
-                                                <p class="mb-0 c-name">United Kingdom</p>
-                                                <p class="mb-0">40%</p>
-                                            </div>
-                                            <div class="progress">
-                                                <div class="progress-bar bg-primary"
-                                                    style="width:40%; height:5px; border-radius:4px;" role="progressbar">
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="country-list">
-                                        <img src="{{ url('public/assets') }}/images/country/aus.png" alt="">
-                                        <div class="progress-box mt-0">
-                                            <div class="d-flex justify-content-between">
-                                                <p class="mb-0 c-name">Australia</p>
-                                                <p class="mb-0">60%</p>
-                                            </div>
-                                            <div class="progress">
-                                                <div class="progress-bar bg-primary"
-                                                    style="width:70%; height:5px; border-radius:4px;" role="progressbar">
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="country-list">
-                                        <img src="{{ url('public/assets') }}/images/country/usa.png" alt="">
-                                        <div class="progress-box mt-0">
-                                            <div class="d-flex justify-content-between">
-                                                <p class="mb-0 c-name">United States</p>
-                                                <p class="mb-0">20%</p>
-                                            </div>
-                                            <div class="progress">
-                                                <div class="progress-bar bg-primary"
-                                                    style="width:80%; height:5px; border-radius:4px;" role="progressbar">
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="country-list">
-                                        <img src="{{ url('public/assets') }}/images/country/pak.png" alt="">
-                                        <div class="progress-box mt-0">
-                                            <div class="d-flex justify-content-between">
-                                                <p class="mb-0 c-name">Pakistan</p>
-                                                <p class="mb-0">20%</p>
-                                            </div>
-                                            <div class="progress">
-                                                <div class="progress-bar bg-primary"
-                                                    style="width:20%; height:5px; border-radius:4px;" role="progressbar">
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="country-list">
-                                        <img src="{{ url('public/assets') }}/images/country/germany.png" alt="">
-                                        <div class="progress-box mt-0">
-                                            <div class="d-flex justify-content-between">
-                                                <p class="mb-0 c-name">Germany</p>
-                                                <p class="mb-0">80%</p>
-                                            </div>
-                                            <div class="progress">
-                                                <div class="progress-bar bg-primary"
-                                                    style="width:80%; height:5px; border-radius:4px;" role="progressbar">
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="country-list">
-                                        <img src="{{ url('public/assets') }}/images/country/uae.png" alt="">
-                                        <div class="progress-box mt-0">
-                                            <div class="d-flex justify-content-between">
-                                                <p class="mb-0 c-name">UAE</p>
-                                                <p class="mb-0">30%</p>
-                                            </div>
-                                            <div class="progress">
-                                                <div class="progress-bar bg-primary"
-                                                    style="width:30%; height:5px; border-radius:4px;" role="progressbar">
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="country-list">
-                                        <img src="{{ url('public/assets') }}/images/country/china.png" alt="">
-                                        <div class="progress-box mt-0">
-                                            <div class="d-flex justify-content-between">
-                                                <p class="mb-0 c-name">China</p>
-                                                <p class="mb-0">40%</p>
-                                            </div>
-                                            <div class="progress">
-                                                <div class="progress-bar bg-primary"
-                                                    style="width:40%; height:5px; border-radius:4px;" role="progressbar">
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
         </div>
     </div>
 
     <!--**********************************
-                                                                                                                                                                                                                                                                                         Content body end
-                                                                                                                                                                                                                                                                            ***********************************-->
+                                                                                                                                                                                                                                                                                                                                                                                                                                                     Content body end
+                                                                                                                                                                                                                                                                                                                                                                                                                                        ***********************************-->
     <div class="offcanvas offcanvas-end customeoff" tabindex="-1" id="offcanvasExample">
         <div class="offcanvas-header">
             <h5 class="modal-title" id="#gridSystemModal">Add Employee</h5>
@@ -987,7 +932,7 @@
             </div>
         </div>
     </div>
-    {{-- secript chart --}}
+    {{-- secript chart per Detik --}}
     <script>
         const ctx = document.getElementById('realtime-chart').getContext('2d');
 
@@ -996,55 +941,205 @@
             data: {
                 labels: [],
                 datasets: [{
-                        label: 'Kelembapan',
-                        data: [],
-                        borderWidth: 1
-                    },
-                    {
-                        label: 'Suhu',
-                        data: [],
-                        borderWidth: 1
-                    }
-                ]
+                    label: 'Ketinggian Air',
+                    data: [],
+                    borderWidth: 1
+                }]
             },
             options: {
                 scales: {
                     y: {
                         beginAtZero: true,
-                        max: 100
+                        title: {
+                            display: true,
+                            text: 'Ketinggian Air (cm)'
+                        }
                     }
                 }
             }
         });
 
-        setInterval(function() {
+        $(document).ready(function() {
+            loadDataDetik();
+        });
+
+        setInterval(loadDataDetik, 5000);
+
+        function loadDataDetik() {
+            // inisialisasi variabel ketinggian air
+            var ketinggianAir = 200;
+
             $.ajax({
-                url: 'apichart',
+                url: 'chartair',
                 type: 'GET',
                 success: function(data) {
-                    chart.data.labels.push(data.created_at);
+                    // mendapatkan waktu dari data.created_at
+                    var waktu = new Date(data.created_at).toLocaleTimeString();
+
+                    // menambahkan waktu ke array label
+                    chart.data.labels.push(waktu);
+
                     if (chart.data.labels.length > 5) {
                         chart.data.labels = chart.data.labels.slice(-5);
                     }
 
-                    // push data kelembapan sinyal
-                    chart.data.datasets[0].data.push(data.kelembapan_sinyal);
-                    if (chart.data.datasets[0].data.length > 5) {
-                        chart.data.datasets[0].data = chart.data.datasets[0].data.slice(-5);
+                    // mengurangi ketinggian air
+                    ketinggianAir -= 5;
+
+                    // kurangi ketinggian air dengan data dari database
+                    ketinggianAir -= data.ketinggian_air;
+
+                    // jika ketinggian air kurang dari 0, set menjadi 0
+                    if (ketinggianAir < 0) {
+                        ketinggianAir = 0;
                     }
 
-                    // push data suhu
-                    chart.data.datasets[1].data.push(data.suhu);
-                    if (chart.data.datasets[1].data.length > 5) {
-                        chart.data.datasets[1].data = chart.data.datasets[1].data.slice(-5);
+                    // push data kelembapan sinyal
+                    chart.data.datasets[0].data.push(ketinggianAir);
+                    if (chart.data.datasets[0].data.length > 5) {
+                        chart.data.datasets[0].data = chart.data.datasets[0].data.slice(-5);
                     }
 
                     chart.update();
                 }
             });
-        }, 5000);
+        }
     </script>
 
+    {{-- secript chart per Jam --}}
+    <script>
+        const ctx2 = document.getElementById('realtime-chart-2').getContext('2d');
+
+        const chart2 = new Chart(ctx2, {
+            type: 'bar',
+            data: {
+                labels: [],
+                datasets: [{
+                    label: 'Ketinggian Air',
+                    data: [],
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        title: {
+                            display: true,
+                            text: 'Ketinggian Air (cm)'
+                        }
+                    }
+                }
+            }
+        });
+
+        $(document).ready(function() {
+            loadData();
+        });
+
+        setInterval(loadData, 3600000); // interval setiap satu jam (3600000 milidetik)
+
+        function loadData() {
+            var jarakAwal = 200; // jarak awal sensor dari permukaan air
+
+            $.ajax({
+                url: 'chartair',
+                type: 'GET',
+                success: function(data) {
+                    // memformat waktu dari data.created_at untuk hanya menampilkan jam
+                    var waktu = new Date(data.created_at).getHours() + ":00";
+
+                    // menghitung jarak dari sensor ke permukaan air
+                    var jarakSaatIni = jarakAwal - data.ketinggian_air;
+
+                    // menambahkan waktu ke array label
+                    chart2.data.labels.push(waktu);
+                    if (chart2.data.labels.length > 5) {
+                        chart2.data.labels = chart2.data.labels.slice(-5);
+                    }
+
+                    // push data kelembapan sinyal
+                    chart2.data.datasets[0].data.push(jarakSaatIni);
+                    if (chart2.data.datasets[0].data.length > 5) {
+                        chart2.data.datasets[0].data = chart2.data.datasets[0].data.slice(-5);
+                    }
+
+                    chart2.update();
+                }
+            });
+        }
+    </script>
+
+    {{-- secript chart per hari --}}
+    <script>
+        const ctx3 = document.getElementById('realtime-chart-3').getContext('2d');
+
+        const chart3 = new Chart(ctx3, {
+            type: 'bar',
+            data: {
+                labels: [],
+                datasets: [{
+                    label: 'Ketinggian Air',
+                    data: [],
+                    borderWidth: 1,
+                    backgroundColor: 'rgba(54, 162, 235, 0.2)',
+                    borderColor: 'rgba(54, 162, 235, 1)',
+                    pointBackgroundColor: 'rgba(54, 162, 235, 1)',
+                    pointBorderColor: '#fff',
+                    pointHoverBackgroundColor: '#fff',
+                    pointHoverBorderColor: 'rgba(54, 162, 235, 1)'
+                }]
+            },
+            options: {
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        title: {
+                            display: true,
+                            text: 'Ketinggian Air (cm)'
+                        }
+                    }
+                }
+            }
+        });
+
+        $(document).ready(function() {
+            loadDataHari();
+        });
+
+        function loadDataHari() {
+            $.ajax({
+                url: 'charthari',
+                type: 'GET',
+                success: function(data) {
+                    chart3.data.labels = [];
+                    chart3.data.datasets[0].data = [];
+                    data.forEach(function(obj) {
+                        var waktu = new Date(obj.created_at).toLocaleDateString();
+                        chart3.data.labels.push(waktu);
+                        var ketinggian_air = obj.ketinggian_air;
+                        if (ketinggian_air > 200) {
+                            ketinggian_air = 0;
+                        } else {
+                            ketinggian_air = 200 - ketinggian_air;
+                        }
+                        chart3.data.datasets[0].data.push(ketinggian_air);
+                    });
+                    chart3.update();
+                }
+            });
+        }
+
+        document.getElementById('download-btn').addEventListener('click', function() {
+            var url = chart3.toBase64Image();
+            var link = document.createElement('a');
+            link.href = url;
+            link.download = 'chart.png';
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        });
+    </script>
     {{--  scrip warning --}}
     <script>
         $(document).ready(function() {
@@ -1086,6 +1181,31 @@
     <style>
         #realtime-chart {
             background-color: #fff;
+        }
+
+        #realtime-chart-2 {
+            background-color: #fff;
+        }
+
+        #realtime-chart-3 {
+            background-color: #fff;
+        }
+
+        .chart-container {
+            position: relative;
+        }
+
+        #download-btn {
+            position: absolute;
+            top: 0px;
+            right: 10px;
+            z-index: 1;
+            padding: 5px 10px;
+            background-color: #2196f3;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
         }
     </style>
 @endsection
